@@ -1,0 +1,51 @@
+\documentclass[dvips,letterpaper,12pt]{report}
+\usepackage{thesis}
+\usepackage{graphicx}
+
+\begin{document}
+
+\pagenumbering{roman}
+
+% Fill in the title, author, degree name, department, and month/year.
+% Upon completion, this should look like the following:
+%\thesistitle
+%	{Complicated and Important-Sounding Thesis Title}
+%	{John P. Doe}
+%	{Master of Science}
+%	{Department of Scientific Computing}
+%	{April 2017}
+% The \thesistitle definition is in thesis.sty.  Other customizations
+% can be made there.
+\thesistitle
+	{Clowder: \\
+	 A Software system to manage the accessibility of \\
+high performance computers for research \\
+	 \footnotesize}
+	{\emph{Samson Ugwuodo}}
+	{Master of \emph{science}}
+	{Department of \emph{Scientific Computing}}		
+	{\emph{April 2017}}
+
+\include{abstract}
+\include{ack}
+\include{contents}
+\include{tables}
+\include{figures}
+
+
+\pagenumbering{arabic}
+\include{chap1}
+\include{chap2}
+\include{chap3}
+\include{chap4}
+\include{chap5}
+\include{chap6}
+
+\include{bib}
+
+% If you have no appendices, remove the following two lines.
+% If you have more appdences, add them as necessary.
+\appendix
+\include{apdxa}
+
+\end{document}
