@@ -1,7 +1,28 @@
 \chapter{Implementation}
 \label{chap:figtab}
-\section{Make Reservation}
-\section{Add Machines}
-\section{Search Inventory}
-\section{Update Inventory}
+We have implemented this project in regard to the specifications. The entire system (clowder ) is meant to be plugged to hardware and software base testing, but we have implemented the basic level of front-end (user interface) and back-end (database) protocols. Overall our approach have covered the user interface and database design with Go libraries and HTML templates.
+\section{Architectural Description}
+For a typical Go programming structure, our program depends on two main packages:
+\begin{description}
+\item[$\bullet$]DATABASE(db)
+\item[$\bullet$]HTTP(http)
+\end{description}
+In the db package contains all the .go file of database class (struct) for each hardware represented in the system. The http package also contain some .go file (for example the Handler) and .html files of web interface content and elements. below is a table describing the list of header files in each packages.
+
+\begin{table}[h!]
+  \centering
+  \caption{Database packages}
+  \label{tab:table1}
+  \begin{tabular}{l|c||r}
+    No & Struct& Functions\\
+    \hline
+    1 &machine() &  initMachines()\\
+      && CreateMachine()\\
+      &&UpdateMachine()\\
+      &&GetMachine()\\
+      &&GetMachines()\\
+  \end{tabular}
+\end{table}
+\section{Code listing and Functions}
+
 
