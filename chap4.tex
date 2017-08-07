@@ -1,9 +1,45 @@
 \chapter{Evaluation}
 \label{chap:ch4_abbr}
 \section{Test cases}
-\subsection{Checking available machines}
-\subsection{Reserving a machine}
-\subsection{Updating a machine}
-\subsection{filtering inventory}
+We have evaluated this software by testing different functionality as specified in the requirement. This was achieved by creating multiple cases that proves the performance of the software. This evalution was performed in real time and directly online. We have inlcuded images and table showing the test cases and results. 
+\section*{Checking available machines}
+In the software specification, it is designed to have search option on the user interface. One of this search requirement is to check for available machines (unreserved machines). In the below table is list of machines reserved for different date. The test is to enter a search query with a specific date interval and ask the software to provide any machine available withing that date.
+
+\begin{table}[h!]
+  \centering
+  \label{tab:table1}
+  \begin{tabular}{l|c||c||c||c||c||c||r}
+    No & Machines & July & Aug & Sep & Oct & Nov & Dec \\
+    \hline
+    1 &Machine A & free & free & free & free & free & free\\
+    2 &Machine B & free & free & free & free & free & free\\
+    3 &Machine C & free & free & free & free & free & free\\
+    4 &Machine D & free & free & free & free & free & free\\
+    5 &Machine E & free & free & free & free & free & free\\
+    6 &Machine F & free & free & free & free & free & free\\
+  \end{tabular}
+  \caption{List of Reservations}
+\end{table}
+
+\begin{table}[h!]
+  \centering
+  \label{tab:table1}
+  \begin{tabular}{l|c||r}
+    No & Date: start --- end & Available machines\\
+    \hline
+    1 &4/07 to 24/07  & A C D E F \\
+    2 &4/07 to 24/07  & A C D E F \\
+    3 &4/07 to 24/07  & A C D E F \\
+    4 &4/07 to 24/07  & A C D E F \\
+    5 &4/07 to 24/07  & A C D E F \\
+    6 &4/07 to 24/07  & A C D E F \\
+  \end{tabular}
+  \caption{Test case and Result}
+\end{table}
+
+\section*{Reserving a machine}
+Reserving machine is another requirement we have implemented in this software. This is where users choose a machine and create a reservation with definit time and date. 
+\section*{Updating a machine}
+\section*{filtering inventory}
 
 
