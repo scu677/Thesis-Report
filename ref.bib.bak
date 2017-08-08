@@ -1,0 +1,17 @@
+@article{conallen1999modeling,
+  title={Modeling Web application architectures with UML},
+  author={Conallen, Jim},
+  journal={Communications of the ACM},
+  volume={42},
+  number={10},
+  pages={63--70},
+  year={1999},
+  publisher={ACM}
+}
+@online{WinNT,
+  author = {MultiMedia LLC},
+  title = {{MS Windows NT} Kernel Description},
+  year = 1999,
+  url = {http://web.archive.org/web/20080207010024/http://www.808multimedia.com/winnt/kernel.htm},
+  urldate = {2010-09-30}
+}

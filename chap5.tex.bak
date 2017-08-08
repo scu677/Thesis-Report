@@ -1,0 +1,3 @@
+\chapter{Future Work}
+In my future work I intend to implement this software concept in a mobile application platform. Using a schedulling technology and a reservation capability concept, we can develope a software application that can manage a parking lot payment and space reservation. The purpose of this idea is to reduce the time people spent hovering around the parking lot in search of space. The application will allow user to pre-book a space and pay for time online before driving to the parking lot. With that ability, the designated parking lot will only have enough space for people that have pre-booked a space. this idead can be implemented using any programming language that support object oriented programming.  
+\label{chap:refs}

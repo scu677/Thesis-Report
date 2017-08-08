@@ -1,0 +1,115 @@
+\chapter{Implementation}
+\label{chap:figtab}
+\section{Review}
+The software implementation showcase the functionality of all the requirements as described previously. This functionality include the ability to input data and retrieve data through the system. Proper measures has been be considered to obtained maximum result as required. This measure includes the choice of tools used for the developement and the design approach. It was implemented to demonstrate the realization of the proposed specifications especialy features such as making reservations in the system.
+\section{Implementation tools}
+ The user interface is implemented on the internet web browser using apeche local server port as web address. The web browser serves as the environment for testing the frontend (user interface) of the software, and while the HTML template and Go library is used for the development. The database was developed using the SQLite model schema which is coded with Go language.  This platform provides robust query funtionality for creating several data schema. The HTTP server provides connections between the frontend and backend implementation. It server as a channel for parsing command protocol through user interface and database. We used local port to represent  web address for this  implemeting.  These tools provided all the necessary component to address the requirements for this software. 
+\section{Program Structure}
+The Go programming language has a fundamental developemtn structure that is categorized into packages. The packages contains a group of program file with dependencies that links them together. For this software design, we have used two main package to actualize the develpment goal. These packages inludes:
+\begin{description}
+\item[$\bullet$]Database package 
+\item[$\bullet$]HTTP package 
+\end{description}
+
+The database package contains all the Go files with database related method (struct) and functions. Each Go class or struct of hardware represented in the system depends on this package for communicationg with other classes and database resources. The HTTP package also contain some Go file relates to the user interface ( for example the funtion Handler) and HTML files. the HTML files contians several templates for the web interface content and elements. These file depends on the HTTP package for serving the web contents and post requests. Below is a table describing the list of header files in each packages.
+\pagebreak
+\begin{table}[h!]
+  \centering
+  \label{tab:table1}
+  \begin{tabular}{ccc}
+    \hline
+    No & Package & Files\\
+   \hline
+    1 &Database (pkg)& Machine.go\\
+       &&Reservation.go\\
+      &&Disk.go\\
+      &&User.go\\
+      &&nic.go\\
+    \hline
+    2 &HTTP (pkg)& Handler.go\\
+    &&Server.go\\
+    &&Templates(.html)\\
+    \hline
+  \end{tabular}
+  \caption{Program package}
+\end{table}
+
+\section{List of Funtions}
+The functions contains group of statements that perform the tasks specified in the software requirement. It contains the algorithms that process different  queries and schema actions. The method fields contains the entities of the hardware represented in the system, and this feilds are used as argumet in the various functions. 
+\begin{table}[h!]
+  \centering
+  \label{tab:table1}
+  \begin{tabular}{l|c||r}
+    No & Struct& Functions\\
+    \hline
+    1 &machine() &  initMachines()\\
+      && CreateMachine()\\
+      &&UpdateMachine()\\
+      &&GetMachines()\\
+      &&GetAvailableMachine()\\
+     \hline
+    2 &reservation() & initReservation\\
+    && CreateReservation()\\
+    && GetReservation()\\
+    && FilterReservation()\\
+    && SortReservation()\\
+    \hline
+    3 &disks() & intiDisks\\
+    && CreateDisks()\\
+    \hline
+    4 &nics() & initNICs\\
+    && CreateNICs
+  \end{tabular}
+  \caption{List of Funtions}
+\end{table}
+\pagebreak
+\section{Description of Functions}
+\section*{Adding Machines to the system}
+Adding machines and other devices to the system is one of the software  requirements. On the user interface, the software provides a text feild and forms where users can enter details of machines to be saved as data in the database. The SQLite Init funtion create a new database schema with defined table feilds where data is stored. When the user submit a AddMachine form, the InitMachine() create the database schema where the machine details is stored. It uses type (Machine) feilds as argument for creating the schema feilds. Below is the code listing for creating database:
+\begin{lstlisting}
+
+func initMachines(tx *sql.Tx) error {
+	_, err := tx.Exec(`
+	CREATE TABLE Machines(
+		...........
+	);`)
+	return err
+}
+\end{lstlisting}
+
+The CreateMachine function is reponsible for parsing the details of machine to the database schema. It uses the SQLite insert query to parse a give data using the arguments to the database. When the user submit a form (AddMachine), the Go HTTP handler process this form by converting the plan text to a formdata accroding to their data types defined in the schema, and then call the CreateMachine to insert this data to the database. Below is the code list:
+\begin{lstlisting}
+func (d DB) CreateMachine(name string, arch string,
+	microarch string, cores int, memoryGB int) error {
+	_, err := d.sql.Exec(`
+			INSERT INTO Machines(name, arch, microarch, cores, memory)
+			VALUES (
+				//feild values
+			)`,
+		name, arch, microarch, cores, memoryGB)
+	return err
+}
+\end{lstlisting}
+
+\section*{Making a Reservation}
+The reservation process is similar to creating a machine but here it required the UserID and MachineID as froeign keys in creating the database schema. The UserID is used for selecting  the user making the reservation, and MachineID for selecting the machine to be reserved. On the web interface (reservation page), the form has a drop down list where users can select their username and the machine they want to reserve. When users open the reservation page to create new revervation, the HTML form use the post request to get list of machines and username on the dropdown list.
+\begin{lstlisting}
+	_, err := d.sql.Exec(`
+			INSERT INTO Reservations(machine,user,start,end,pxepath,nfsroot)
+			VALUES (
+				(SELECT id from Machines where name=?),
+				(SELECT id from Users where username=?),
+				//other fields
+			)`,
+\end{lstlisting}
+
+To make a reservation, users will select their username and a machine from the drop down list which is loaded by GetMachine and GetUser function. The selection query gets the UserId and the MachineId of the selected username and machine as foriegn key to the reservation database shema. Also, start and end time/date of the reservation is entered on th text feild , and this plan text is formated to match the database using a time package in Go library. After submiting the form, the Go HTTP handler handles the Insert query by taking all the arguement values and saving them to database. 
+\section*{Database Funtions}
+\section*{Protocol Funtions}
+.
+
+\section{Problems Encounted}
+
+
+
+
