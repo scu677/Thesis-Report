@@ -12,23 +12,24 @@ The Go programming language has a fundamental developemtn structure that is cate
 \end{description}
 
 The database package contains all the Go files with database related method (struct) and functions. Each Go class or struct of hardware represented in the system depends on this package for communicationg with other classes and database resources. The HTTP package also contain some Go file relates to the user interface ( for example the funtion Handler) and HTML files. the HTML files contians several templates for the web interface content and elements. These file depends on the HTTP package for serving the web contents and post requests. Below is a table describing the list of header files in each packages.
+\pagebreak
 \begin{table}[h!]
   \centering
   \label{tab:table1}
   \begin{tabular}{ccc}
-    \toprule
+    \hline
     No & Package & Files\\
-   \midrule
+   \hline
     1 &Database (pkg)& Machine.go\\
        &&Reservation.go\\
       &&Disk.go\\
       &&User.go\\
       &&nic.go\\
-    \midrule
+    \hline
     2 &HTTP (pkg)& Handler.go\\
     &&Server.go\\
     &&Templates(.html)\\
-    \bottomrule
+    \hline
   \end{tabular}
   \caption{Program package}
 \end{table}
@@ -65,56 +66,61 @@ The functions contains group of statements that perform the tasks specified in t
 \section{Description of Functions}
 \section*{Adding Machines to the system}
 Adding machines and other devices to the system is one of the software  requirements. On the user interface, the software provides a text feild and forms where users can enter details of machines to be saved as data in the database. The SQLite Init funtion create a new database schema with defined table feilds where data is stored. When the user submit a AddMachine form, the InitMachine() create the database schema where the machine details is stored. It uses type (Machine) feilds as argument for creating the schema feilds. Below is the code listing for creating database:
-\begin{lstlisting}
+\begin{lstlisting}[caption=Creating Database for machine, label=Intitializing database]
 
 func initMachines(tx *sql.Tx) error {
 	_, err := tx.Exec(`
 	CREATE TABLE Machines(
 		...........
-	);
-	`)
+	);`)
 	return err
 }
 \end{lstlisting}
 
 The CreateMachine function is reponsible for parsing the details of machine to the database schema. It uses the SQLite insert query to parse a give data using the arguments to the database. When the user submit a form (AddMachine), the Go HTTP handler process this form by converting the plan text to a formdata accroding to their data types defined in the schema, and then call the CreateMachine to insert this data to the database. Below is the code list:
-\begin{lstlisting}
+\begin{lstlisting}[caption=Adding machines details, label=Adding machine]
 func (d DB) CreateMachine(name string, arch string,
 	microarch string, cores int, memoryGB int) error {
 	_, err := d.sql.Exec(`
-			INSERT INTO Machines(name, arch, microarch, cores, memory)
+			INSERT INTO Machines(name, arch, microarch,
+			 cores, memory)
 			VALUES (
-				.......
+				//feild values
 			)`,
 		name, arch, microarch, cores, memoryGB)
 	return err
 }
-
 \end{lstlisting}
-
 
 \section*{Making a Reservation}
 The reservation process is similar to creating a machine but here it required the UserID and MachineID as froeign keys in creating the database schema. The UserID is used for selecting  the user making the reservation, and MachineID for selecting the machine to be reserved. On the web interface (reservation page), the form has a drop down list where users can select their username and the machine they want to reserve. When users open the reservation page to create new revervation, the HTML form use the post request to get list of machines and username on the dropdown list.
-\begin{lstlisting}
+\begin{lstlisting}[caption=Storing Reservation details, label=Adding reservation]
 	_, err := d.sql.Exec(`
-			INSERT INTO Reservations(machine,user,start,end,pxepath,nfsroot)
+			INSERT INTO Reservations(machine,user,start,end,
+			pxepath,nfsroot)
 			VALUES (
 				(SELECT id from Machines where name=?),
 				(SELECT id from Users where username=?),
-				?,
-				?,
-				?,
-				?
+				//other fields
 			)`,
 \end{lstlisting}
 
-To make a reservation, users will select their username and machine from the drop down list, enter the start and end time/date of the reservation and submit. After submiting this form, the Go HTTP handler process theThe server call two functions for this process: 
+To make a reservation, users will select their username and a machine from the drop down list which is loaded by GetMachine and GetUser function. The selection query gets the UserId and the MachineId of the selected username and machine as foriegn key to the reservation database shema. Also, start and end time/date of the reservation is entered on th text feild , and this plan text is formated to match the database using a time package in Go library. After submiting the form, the Go HTTP handler handles the Insert query by taking all the arguement values and saving them to database. 
+\section*{Checking Available Machines}
+The user can search the inventory for specific imformation. One of the example is the ability to search for available machines in the system. This software feature help to find machine that are free to be reserved. In this process, the user enters a specific data range in the provided text feild, and submit the query. After submiting, the Go HTTP handler process this palintext, and the server calls the GetAvailableMachine method (function) to fetch this request from the database. The GetAvalaiblemachine funtion uses a SQLite join query tech to combine the machine and reservation database table. Combining this two tables allow the query to scan through both table rows using reservationID and machineID to indentify the machines that are not reserved for that time range the user entered. Below code listing shows the function and query for this operation:
+\begin{lstlisting}[caption=Searching available, label=Search available machine]
 
-\section*{Database Funtions}
-\section*{Protocol Funtions}
-.
+\end{lstlisting}
+\section*{Updating Machines details}
+As part of the software requirements, users can change the information stored in the database. This is done on the wen interface using edit box that is attached to every feild with that requirement. Example is updating the information of a particular computer or disks when the hardware is upgraded. In this case, the UpdateMachine method performs this action by using the SQLite update query. This update query opens the database schema of the machine and replaces the existing data with a new one.
+Below code listing shows the update function:
+\begin{lstlisting}[caption=Function for Updating data, label=Update function]
+
+\end{lstlisting}
+ Different data format are converted by the Go HTTP handler first before stroing them to the database. 
 
 \section{Problems Encounted}
+During the implemetations, we encountered problems such as formating plain text to database data types, and combining two database table for search queries.
 
 
 
