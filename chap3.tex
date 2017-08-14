@@ -62,12 +62,13 @@ The functions contains group of statements that perform the tasks specified in t
   \end{tabular}
   \caption{List of Funtions}
 \end{table}
+
 \pagebreak
 \section{Description of Functions}
 \section*{Adding Machines to the system}
 Adding machines and other devices to the system is one of the software  requirements. On the user interface, the software provides a text feild and forms where users can enter details of machines to be saved as data in the database. The SQLite Init funtion create a new database schema with defined table feilds where data is stored. When the user submit a AddMachine form, the InitMachine() create the database schema where the machine details is stored. It uses type (Machine) feilds as argument for creating the schema feilds. Below is the code listing for creating database:
-\begin{lstlisting}[caption=Creating Database for machine, label=Intitializing database]
 
+\begin{lstlisting}[caption=Creating Database for machine, label=Intitializing database]
 func initMachines(tx *sql.Tx) error {
 	_, err := tx.Exec(`
 	CREATE TABLE Machines(
@@ -107,8 +108,23 @@ The reservation process is similar to creating a machine but here it required th
 
 To make a reservation, users will select their username and a machine from the drop down list which is loaded by GetMachine and GetUser function. The selection query gets the UserId and the MachineId of the selected username and machine as foriegn key to the reservation database shema. Also, start and end time/date of the reservation is entered on th text feild , and this plan text is formated to match the database using a time package in Go library. After submiting the form, the Go HTTP handler handles the Insert query by taking all the arguement values and saving them to database. 
 \section*{Checking Available Machines}
-The user can search the inventory for specific imformation. One of the example is the ability to search for available machines in the system. This software feature help to find machine that are free to be reserved. In this process, the user enters a specific data range in the provided text feild, and submit the query. After submiting, the Go HTTP handler process this palintext, and the server calls the GetAvailableMachine method (function) to fetch this request from the database. The GetAvalaiblemachine funtion uses a SQLite join query tech to combine the machine and reservation database table. Combining this two tables allow the query to scan through both table rows using reservationID and machineID to indentify the machines that are not reserved for that time range the user entered. Below code listing shows the function and query for this operation:
+The user can search the inventory for specific imformation. One of the example is the ability to search for available machines in the system. Available machines are those machine that are either not reserved at the moment or that are free for a certain period. This feature helps users to get list of machine free to be reserved. In this process of checking available machine, the user enters a specific start date and end date in the provided text feild, and submit the query. After submiting the query, the HTTP handler process this request, and the server calls the GetAvailableMachine method (function) to fetch this request from the database. Go HTTP handler uses a Request functon to call the server and  ResponseWriter to respond to the html request \cite{Gohttp}. The server uses ListernAndServe method to listen to incoming request and to sall the requested method to handle the request. In the GetAvalaibleMachine method, we used a SQLite sub query tech to combine the machine and reservation database table. This combination logic allows the query to scan through both table rows using reservationID and machineID to indentify the machines that are not reserved for that time range the user entered. The logic contains SQL WHERE cluase, OR and AND operator to perform comparisons between reservation dates and time. \cite{ANDOR}The AND operator is used to allow multiple conditions in the statement,  the OR operator is used to combine condition that are true, and the WHERE clause is used to specify condition while fetching data from database\cite{WHEREclause}. 
+\pagebreak
+Below code listing shows the function and query for this operation:
 \begin{lstlisting}[caption=Searching available, label=Search available machine]
+func(d DB) Filter_M_By_Dates(from time.Time, to time.Time) ([]Machine, error){
+
+         rows, err := d.sql.Query(`
+		SELECT m.id, name, arch, microarch, cores, memory
+		FROM Machines m
+		WHERE m.id NOT IN (SELECT r.machine FROM Reservations r
+		WHERE (? BETWEEN r.start AND r.end)
+		OR (? BETWEEN r.start AND r.end)
+		AND  ( r.start BETWEEN ? AND ?) OR (r.end BETWEEN ? AND ?)
+	
+	);	
+	`, from, to, from, to, from, to)
+
 
 \end{lstlisting}
 \section*{Updating Machines details}
@@ -116,9 +132,17 @@ As part of the software requirements, users can change the information stored in
 Below code listing shows the update function:
 \begin{lstlisting}[caption=Function for Updating data, label=Update function]
 
-\end{lstlisting}
- Different data format are converted by the Go HTTP handler first before stroing them to the database. 
+	_, err := d.sql.Exec(`
+			UPDATE Machines
+			SET arch = ?, microarch = ?, cores = ?, memory = ?
+			WHERE `+row+` = id
 
+	`,arch, microarch, cores, memory)
+
+\end{lstlisting}
+\section{Get Funtions}
+The Get function is a mothod used for fetching list of machines and other devices stored in the database. Each time the user opens the web interface, the HTTP handler send server a request and server calls the GetMachines method to fetch the data from database. This information is listed in the inventory on the web interface through the HTTP ResponseWriter. The Get futction uses the SQLite selection query to scan throught the database and select the required data.  Another usage for this Get function is fetching the details of a machine when the user click on a particular machine. It uses a SELECT query and WHERE condition in the logic, to speciy the machine clicked used its unique ID. These mehtods is applicable to other classes (type) such as, disks, nices and reservations. 
+ 
 \section{Problems Encounted}
 During the implemetations, we encountered problems such as formating plain text to database data types, and combining two database table for search queries.
 
