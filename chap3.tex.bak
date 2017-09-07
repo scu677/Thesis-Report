@@ -1,115 +1,56 @@
-\chapter{Implementation}
+\chapter{Design and Requirements}
 \label{chap:figtab}
-\section{Review}
-The software implementation showcase the functionality of all the requirements as described previously. This functionality include the ability to input data and retrieve data through the system. Proper measures has been be considered to obtained maximum result as required. This measure includes the choice of tools used for the developement and the design approach. It was implemented to demonstrate the realization of the proposed specifications especialy features such as making reservations in the system.
-\section{Implementation tools}
- The user interface is implemented on the internet web browser using apeche local server port as web address. The web browser serves as the environment for testing the frontend (user interface) of the software, and while the HTML template and Go library is used for the development. The database was developed using the SQLite model schema which is coded with Go language.  This platform provides robust query funtionality for creating several data schema. The HTTP server provides connections between the frontend and backend implementation. It server as a channel for parsing command protocol through user interface and database. We used local port to represent  web address for this  implemeting.  These tools provided all the necessary component to address the requirements for this software. 
-\section{Program Structure}
-The Go programming language has a fundamental developemtn structure that is categorized into packages. The packages contains a group of program file with dependencies that links them together. For this software design, we have used two main package to actualize the develpment goal. These packages inludes:
+\label{chap}
+\section{Requirements}
+The objective of this software is to  a dynamic user interface and a functional database system. With regard to that, the specification is made up of necessary features and functionality that appear on the user interface. The following are the major specification of this software:
 \begin{description}
-\item[$\bullet$]Database package 
-\item[$\bullet$]HTTP package 
+\item[$\bullet$] Data Inventory
+\item[$\bullet$] Searching Inventory(SI)
+\item[$\bullet$] Make Reservations
+\item[$\bullet$] Cancel Reservations
+\item[$\bullet$] Add Data
+\item[$\bullet$] Update Data
 \end{description}
+The user interface is able to list the inventory of data stored in the database in different categories. It is one of the features of the user interface because it presents the content of the database. Data inventory is required to retrieve information from the database and requested by users on the interface. For example, when users need to see the list of test machine in the system, this feature is repsonsible for providing the information already on the web interface. Necessary functionality are designed  to help users access the inventory faster, one of them is the ability to sort the inventory cronologically or by data sequence.  
+As there are lots of different data listed in the inventory, it is necessary to have a function that allow users to search information from the inventory. Searching the inventory helps the users to get specific data by typing in a set of query such dates, time, NFS root , PXE and memory sizes of a particular machine or reseravtions. This feature has a text feild for inserting text and search button for submitting request on the user interface. Users can search for a particular reservation by specifying a range of data they want to see, and this will present the lists of reservations made within that date and so on. Another example of searching inventory is where users can avalaible machines, this allows the user at all time to know which machine is free for reservation.
+Another requirement of this software is the ability to make reservations: users are able to choose a machine from the inventory and reserve it for a fixed date and time. This requirement on the high level is meant to allow user to a specific machine for running a particular task on that machine without interruption. When a reservation made is expired, the machine that was reserved becomes free for other users. As new machines are added to the cluster, the Add-data functionality allows users to add details of those machines to the database and update the inventory. Likewise, when the user want to change a certain properties of the machines such as, memory size or disk, the Update-data functionality helps to perform this action.
+\section{Design}
+The main idea of the software is to solve the issue of user interface, and system management. So we have designed this software with the approach to provide functional solution to the specifications. The design structure comprises the various  segments and element of the user interface (front end) combined with the database (back end)  and the control protocols. Below is a figure that describe the main structure of the design in terms of operation:
 
-The database package contains all the Go files with database related method (struct) and functions. Each Go class or struct of hardware represented in the system depends on this package for communicationg with other classes and database resources. The HTTP package also contain some Go file relates to the user interface ( for example the funtion Handler) and HTML files. the HTML files contians several templates for the web interface content and elements. These file depends on the HTTP package for serving the web contents and post requests. Below is a table describing the list of header files in each packages.
-\pagebreak
-\begin{table}[h!]
-  \centering
-  \label{tab:table1}
-  \begin{tabular}{ccc}
-    \hline
-    No & Package & Files\\
-   \hline
-    1 &Database (pkg)& Machine.go\\
-       &&Reservation.go\\
-      &&Disk.go\\
-      &&User.go\\
-      &&nic.go\\
-    \hline
-    2 &HTTP (pkg)& Handler.go\\
-    &&Server.go\\
-    &&Templates(.html)\\
-    \hline
-  \end{tabular}
-  \caption{Program package}
-\end{table}
+\begin{figure}[h]
+  \includegraphics[width=\linewidth]{Design.eps}
+  \label{fig:Design of program}
+  \caption{Design}
+\end{figure}
 
-\section{List of Funtions}
-The functions contains group of statements that perform the tasks specified in the software requirement. It contains the algorithms that process different  queries and schema actions. The method fields contains the entities of the hardware represented in the system, and this feilds are used as argumet in the various functions. 
-\begin{table}[h!]
-  \centering
-  \label{tab:table1}
-  \begin{tabular}{l|c||r}
-    No & Struct& Functions\\
-    \hline
-    1 &machine() &  initMachines()\\
-      && CreateMachine()\\
-      &&UpdateMachine()\\
-      &&GetMachines()\\
-      &&GetAvailableMachine()\\
-     \hline
-    2 &reservation() & initReservation\\
-    && CreateReservation()\\
-    && GetReservation()\\
-    && FilterReservation()\\
-    && SortReservation()\\
-    \hline
-    3 &disks() & intiDisks\\
-    && CreateDisks()\\
-    \hline
-    4 &nics() & initNICs\\
-    && CreateNICs
-  \end{tabular}
-  \caption{List of Funtions}
-\end{table}
-\pagebreak
-\section{Description of Functions}
-\section*{Adding Machines to the system}
-Adding machines and other devices to the system is one of the software  requirements. On the user interface, the software provides a text feild and forms where users can enter details of machines to be saved as data in the database. The SQLite Init funtion create a new database schema with defined table feilds where data is stored. When the user submit a AddMachine form, the InitMachine() create the database schema where the machine details is stored. It uses type (Machine) feilds as argument for creating the schema feilds. Below is the code listing for creating database:
-\begin{lstlisting}
+We designed a web interface that provides  flexible and dynamic access to the system with interactive functionality. This web page contains inputs and output features. The reason for choosing a web page instead of other options is to provides online dynamic and simultaneous  access to the system rather than performing manual command prompts (example: checking the usage of machine, properties of machine, and status of machine on Unix interface). Another reason is to have a functional real time user interface that present the activities of the Clowder. The web server is responsible for serving the web page all the resources requested by the users, and it serves as a channel between the user and the database. We designed an operational (event recording and system referencing) database that address the issue of system management. The database stores data from the web page and also retrieves data on the web page via the server. As the user log on to the their account on the web page the server will pass this information to the  database which is controlled by the main program (command protocol). The command protocols is responsible for handling the user interface activities and executing the database queries.  
 
-func initMachines(tx *sql.Tx) error {
-	_, err := tx.Exec(`
-	CREATE TABLE Machines(
-		...........
-	);`)
-	return err
-}
-\end{lstlisting}
-
-The CreateMachine function is reponsible for parsing the details of machine to the database schema. It uses the SQLite insert query to parse a give data using the arguments to the database. When the user submit a form (AddMachine), the Go HTTP handler process this form by converting the plan text to a formdata accroding to their data types defined in the schema, and then call the CreateMachine to insert this data to the database. Below is the code list:
-\begin{lstlisting}
-func (d DB) CreateMachine(name string, arch string,
-	microarch string, cores int, memoryGB int) error {
-	_, err := d.sql.Exec(`
-			INSERT INTO Machines(name, arch, microarch, cores, memory)
-			VALUES (
-				//feild values
-			)`,
-		name, arch, microarch, cores, memoryGB)
-	return err
-}
-\end{lstlisting}
-
-\section*{Making a Reservation}
-The reservation process is similar to creating a machine but here it required the UserID and MachineID as froeign keys in creating the database schema. The UserID is used for selecting  the user making the reservation, and MachineID for selecting the machine to be reserved. On the web interface (reservation page), the form has a drop down list where users can select their username and the machine they want to reserve. When users open the reservation page to create new revervation, the HTML form use the post request to get list of machines and username on the dropdown list.
-\begin{lstlisting}
-	_, err := d.sql.Exec(`
-			INSERT INTO Reservations(machine,user,start,end,pxepath,nfsroot)
-			VALUES (
-				(SELECT id from Machines where name=?),
-				(SELECT id from Users where username=?),
-				//other fields
-			)`,
-\end{lstlisting}
-
-To make a reservation, users will select their username and a machine from the drop down list which is loaded by GetMachine and GetUser function. The selection query gets the UserId and the MachineId of the selected username and machine as foriegn key to the reservation database shema. Also, start and end time/date of the reservation is entered on th text feild , and this plan text is formated to match the database using a time package in Go library. After submiting the form, the Go HTTP handler handles the Insert query by taking all the arguement values and saving them to database. 
-\section*{Database Funtions}
-\section*{Protocol Funtions}
-.
-
-\section{Problems Encounted}
-
-
-
+\subsection{User Interface}
+The web interface represents the user interface (UI) where users get access to the system. It is part of the design that represents the front end of the software.The web interface elements controls the basic functionality for data input and out put. It represent each feature as mentioned in the specification. This web interface structure is designed using  HTML template as the front end and Go programming language as the back end. 
+The web interface contains all the necessary elements required to have dynamic and flexible access to the system. These elements includes:
+\begin{description}
+  \item[$\bullet$] Forms
+  \item[$\bullet$] Input controls
+\end{description}
+\subsection*{Forms}
+ Forms are one the elements that provides the ability to input data to the database.The data is submitted through a HTML post request \cite{WinNT}. The post forms are used for submitting data such as machines and reservations details. The form is designed with elements which includes; id and name attributes for identifying data, text fields for collecting data, select menus for selecting data options and submit button for submitting the data. When data is submitted with HTML form, the Go HTTP framework in the web server call the Go function handler to process and parse this data to the database.  After the data (example: a database query) is processed, the Go program generates an HTML page (such as machines inventory), which the server returns to the web interface. In this system design, the forms are used for creating new machines, disks, NICs and making reservation. 
+\subsection*{Input Controls}
+The input control in this web interface provides the necessary components that supports the functionality of the software. There is array of HTML input control, but we have chosen a few that satisfy our specifications. These input controls includes text field, buttons, date fields, drop down list and list box. They are used for both input and output functions like listing the inventory, inserting texts, to update data, to send queries, viewing selection options and searching inventory. These controls are designed with HTML tags and HTML template.
+\subsection{Server}
+The server is responsible for parsing all request from the web interface to the database and command protocol. When request is made on the web interface (for instance available machine on database), the server calls the  specific function of command protocol to handle this request by providing the necessary resources. Likewise the server interchange communication between the user interface and the database system for executions and requests. 
+\begin{figure}[h!]
+\includegraphics[width = \linewidth]{server.eps}
+\label{fig:Description of Server Activity} 
+\caption{Server Activity Description}
+\end{figure}
+\subsection{Database}
+The database is another major component of this system, because it is provides storage and resource for the system. The data includes reservation records, machine details, disks, and NICs information. The database is designed with SQLite model using Go programming language as the back end tech. SQlite was used here because its a fast open source SQL engine. We created a functional database system that suites the specification of the software. 
+The database scheme contains tables of machines, user record, reservation, NICs (network interface cards) and disks.  One of the function of the software is the ability to make reservations.  Below show a typical model of the database design.
+ \begin{figure}[h!]
+\includegraphics[width = \linewidth]{database.eps}
+\label{fig:Database Schema} 
+\caption{Database design}
+\end{figure}
+\subsection{Data flow and  protocols}
+The data flows from the user interface via the server to the database. We used Go HTTP handler to process data recieved from the HTML form to be stored in the database. The client server initiate each method (function) when the HTTP handler sends a request. For example, when users search for list of information such as machines details, the request is sent through the server as a query, and the specific Go fuction is called to fetch the data from the disegnated database. This process is the protocol that control the sequence of data flow in the system. It controls data input, handling and output. This protocol improves data circulation in the system and provides automatic  command rather than manual query routin perfomed on commad line. 
 

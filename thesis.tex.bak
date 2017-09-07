@@ -1,3 +1,4 @@
+
 \documentclass[letterpaper,12pt]{report}
 \usepackage{thesis}
 \usepackage{adjustbox}
@@ -10,6 +11,7 @@
 \usepackage{tcolorbox}
 \usepackage{geometry}
 \usepackage{multirow}
+\usepackage{float}
 \geometry{%
 letterpaper, % a4paper
 left=   20 mm,
@@ -69,6 +71,7 @@ bottom= 20 mm,}
 \include{chap3}
 \include{chap4}
 \include{chap5}
+
 \include{chap6}
 
 \include{bib}
