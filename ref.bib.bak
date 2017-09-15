@@ -1,9 +1,6 @@
 @online{WinNT,
   author = {MultiMedia LLC},
-  title = {{MS Windows NT} Kernel Description},
-  year = 1999,
   url = {https://www.usability.gov/what-and-why/user-interface-design.html},
-  urldate = {2010-09-30}
 }
 @online{Gohttp,
  title = Listen and Serve
@@ -13,12 +10,10 @@
  author ={SQLite Where Clause},
   url = {https://www.tutorialspoint.com/sqlite/sqlite_where_clause.htm},
 }
-
 @online{ANDOR,
 author {SQLite AND OR Clasue},
   url = {https://www.tutorialspoint.com/sqlite/sqlite_and_or_clauses.htm},
 }
-
 @misc{PXE,
   title={Preboot Execution Environment (PXE) Specification},
   author={Johnston, M},
@@ -28,4 +23,8 @@ author {SQLite AND OR Clasue},
 @online{NFS,
 author {PXE},
   url = {https://simms-teach.com/howtos/201-pxe-install.pdf},
+}
+@online{DHCP,
+author{GeraldCombs},
+url ={https://wiki.wireshark.org/DHCP},
 }
