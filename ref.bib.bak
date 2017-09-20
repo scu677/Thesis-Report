@@ -3,7 +3,8 @@
   url = {https://www.usability.gov/what-and-why/user-interface-design.html},
 }
 @online{Gohttp,
- title = Listen and Serve
+ title = {Go Listen and Serve},
+ author ={Go HTTP},
   url = {https://golang.org/pkg/net/http/#ListenAndServe},
 }
 @online{WHEREclause,
@@ -11,7 +12,8 @@
   url = {https://www.tutorialspoint.com/sqlite/sqlite_where_clause.htm},
 }
 @online{ANDOR,
-author {SQLite AND OR Clasue},
+title = {SQLite Clause and usage},
+author ={SQLite AND OR Clasue},
   url = {https://www.tutorialspoint.com/sqlite/sqlite_and_or_clauses.htm},
 }
 @misc{PXE,
@@ -20,14 +22,17 @@ author {SQLite AND OR Clasue},
   year={1999},
 }
 @online{NFS,
-author {PXE},
+title ={Network Installation using PXE},
+author= {C.C},
   url = {https://simms-teach.com/howtos/201-pxe-install.pdf},
 }
 @online{DHCP,
-author{GeraldCombs},
+title ={Dynamic Host Configuration Protocol},
+author ={GeraldCombs},
 url ={https://wiki.wireshark.org/DHCP},
 }
 @online{JOIN,
-author{SQL},
+title ={SQL Joins Explained},
+author={SQL},
 url ={http://www.sql-join.com},
 }
