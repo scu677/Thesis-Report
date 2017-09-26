@@ -49,10 +49,10 @@ In the software specification, it is designed to have search option on the user 
     3 &01-12-2017 to 30-01-2018  & B C A D E \\
     4 &30-11-2017 to 30-12-2017  & A  C D E\\
     5 &02-10-2017 to 02-08-2017  & A  D E \\
-   
   \end{tabular}
   \caption{test 2}
 \end{table}
+\pagebreak
 
 \section*{Reserving a machine}
 Reserving machine is another requirement we have implemented in this software. This is the process where users choose and reserve a machine for definite time and date. When a reservation is made, the details of the reservation appears under the machine being reserved. Figure \ref{fig:reserve} shows the evaluating of this function, where we put details of reservation, by selecting a user name, machine and inserting start and end time/date. After submitting with the reserve button, the it appears on the inventory with other reservations list. 
@@ -61,27 +61,41 @@ Reserving machine is another requirement we have implemented in this software. T
   \label{fig:reserve}
   \caption{Reservation function}
 \end{figure}
+
+\begin{figure}
+\includegraphics[width=\linewidth]{dateformat1.eps}
+\caption{reserving with wrong date}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\linewidth]{dateformat2.eps}
+\caption{Error message}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\linewidth]{dateformat3.eps}
+\caption{Invalid reservation}
+\end{figure}
 \pagebreak
+
 \section*{Updating a machine}
 Update functionality allow users to change the details of a machine already stored in the database. This is to enable them update the information about each machine as needed when ever there is an upgrade in the system. We have tested this functionality by changing the entire information of a machine listed in the inventory. Figure \ref{fig:reserve}  shows an example of this test case.
-
 \begin{figure}[h]
   \includegraphics[width=\linewidth]{update.eps}
   \label{fig:reserve}
   \caption{Before update}
 \end{figure}
-
 \begin{figure}[h]
   \includegraphics[width=\linewidth]{change.eps}
   \label{fig:reserve}
   \caption{Editing machine details}
 \end{figure}
-\pagebreak
 \begin{figure}[h]
   \includegraphics[width=\linewidth]{update2.eps}
   \label{fig:reserve}
   \caption{Updated machine properties}
 \end{figure}
+\pagebreak
 
 \section*{Filtering inventory}
 This functionality helps user to filter the inventory using the context of desired information. User is able to filter the machines inventory with memory size. The size range is inserted in the search to get the list of machines that fall within the range. When the button is clicked, the  server returns the list of machine that falls in the range. Another type of filtering is the the drop list filter. This type has a drop down menu user select a context option to search for. For example, user can filter the machine inventory by selecting type OS micro-architecture and architect.
@@ -98,7 +112,6 @@ During the testing of this software, we have evaluated the performance by doing 
  \includegraphics[width=\linewidth]{evaluation.eps}
   \caption{General Evaluation }
 \end{figure}
-
 \begin{figure}[h]
  \includegraphics[width=\linewidth]{evaluation2.eps}
   \caption{Search Available Machines}
