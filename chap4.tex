@@ -12,7 +12,7 @@ The Go programming language has a fundamental development structure that is cate
 \item[$\bullet$]HTTP package 
 \end{description}
 
-The database package contains all the Go files with database related methods. The Go objects represent the same data as in the database. And each Go class depends on this package as the object-relational mapping tool (ORM) between other classes and database resources. The HTTP package also contain some Go file relates to the user interface ( for example the function Handler) and HTML files. the HTML files contains several templates for the web interface content and elements. These file depends on the HTTP package for serving the web contents and post requests. Below is a table describing the list of files in each packages.
+The database package contains all the Go files with database related struct (class). The Go objects represent the same data as in the database. And each Go struct depends on this package as the object-relational mapping tool (ORM) between other struct and database resources. The HTTP package also contain some Go file relates to the user interface ( for example the function Handler) and HTML files. the HTML files contains several templates for the web interface content and elements. These file depends on the HTTP package for serving the web contents and post requests. Below is a table describing the list of files in each packages.
 \pagebreak
 \begin{table}[h!]
   \centering
@@ -35,13 +35,13 @@ The database package contains all the Go files with database related methods. Th
   \caption{Program packages}
 \end{table}
 
-\section{List of Functions}
-The functions contains group of statements that perform the tasks specified in the software requirement. It contains the algorithms that process different  queries and schema actions. The method contains fields that represent the entities of the hardware in the system, and this fields are used as argument in the various functions. 
+\section{List of Struct and methods}
+In Go programming language a Struct is same as Class. It contains group of methods that perform the tasks specified in the software requirement in our design. It also methods contains the algorithms that process different  queries and schema actions. The method contains fields that represent the entities of the hardware in the system, and this fields are used as argument in the various functions. 
 \begin{table}[h!]
   \centering
   \label{tab:table1}
   \begin{tabular}{l|c||r}
-    No & Struct& Functions\\
+    No & Struct& Methods\\
     \hline
     1 &machine &  initMachines()\\
       && CreateMachine()\\
@@ -58,16 +58,20 @@ The functions contains group of statements that perform the tasks specified in t
     3 &disks & initDisks\\
     && CreateDisks()\\
     \hline
-    4 &nics & initNICs\\
-    && CreateNICs
+    4 &nics & initNICs()\\
+    && CreateNICs()\\
+    \hline
+    5 &user & initUsers()\\
+    && CreateUser()\\
+    && GetUser()
   \end{tabular}
-  \caption{List of Funtions}
+  \caption{List of Struct and Methods}
 \end{table}
 
 \pagebreak
-\section{Description of Functions}
+\section{Description of Methods}
 \section*{Adding Machines to the system}
-Adding machines and other devices to the system is one of the software  requirements \ref{addmachines}. On the user interface, the software provides a text field and forms where users can enter details of machines to be saved as data in the database. The InitMachine function create a new database schema with defined table fields where data is stored. When the user submits a AddMachine form, the InitMachine create the database schema where the machine details is stored. It uses type (Machine) fields as argument for creating the schema fields. Below is the code listing for creating database:
+Adding machines and other devices to the system is one of the software requirements in section \ref{addmachines}. On the user interface, the software provides a text field and forms where users can enter details of machines to be saved as data in the database. The InitMachine method create a new database schema with defined table fields where data is stored. When the user submits a Add Machine form, the InitMachine create the database schema where the machine details is stored. It uses type (Machine) fields as argument for creating the schema fields. Below is the code listing for creating database:
 
 \begin{lstlisting}[caption=Creating Database for machine, label=Initializing database]
 func initMachines(tx *sql.Tx) error {
@@ -79,7 +83,7 @@ func initMachines(tx *sql.Tx) error {
 }
 \end{lstlisting}
 
-The CreateMachine function is responsible for parsing the data to the database schema. It uses the SQL INSERT query to parse a give data using the arguments to the database. When the user submit a form (AddMachine), the Go HTTP handler process this form by converting the plan text to a form data according to their data types defined in the schema, and then call the CreateMachine to insert this data to the database. Below is the code list:
+The CreateMachine method is responsible for parsing the data to the database schema. It uses the SQL INSERT query to parse a give data using the arguments to the database. When the user submit a form (AddMachine), the Go HTTP handler process this form by converting the plan text to a form data according to their data types defined in the schema, and then call the CreateMachine to insert this data to the database. Below is the code list:
 
 PSEUDOCODE:\linebreak
 1 Set the table fields .
@@ -101,7 +105,7 @@ func (d DB) CreateMachine(name string, arch string,
 \end{lstlisting}
 
 \section*{Making a Reservation}
-The reservation process is similar to creating a machine but here it required the UserID and MachineID as foreign keys in creating the database schema. The UserID is used for selecting  the user making the reservation, and MachineID for selecting the machine to be reserved. On the web interface (reservation page), the form has a drop down list where users can select their user name and the machine they want to reserve. When users open the reservation page to create new reservation, the HTML form use the post request to get list of machines and user name on the drop-down list.
+The reservation process is similar to creating a machine but here it requires the User ID and Machine ID as foreign keys in creating the database schema. The User ID is used for selecting the user making the reservation, and Machine ID for selecting the machine to be reserved. On the web interface (reservation page), the form has a drop down list where users can select their user name and the machine they want to reserve. When users open the reservation page to create new reservation, the HTML form use the post request to get list of machines and user name on the drop-down list.
 PSEUDOCODE:\linebreak
 1 Input reservation values in the field.
 2 Select machine id from the list where machine name is chosen.
@@ -118,7 +122,7 @@ PSEUDOCODE:\linebreak
 			)`,
 \end{lstlisting}
 
-To make a reservation, users will select their user name and a machine from the drop down list which is loaded by GetMachine and GetUser function. The selection query gets the UserId and the MachineId of the selected user name and machine as foreign key to the reservation database schema. Also, start and end time/date of the reservation is entered on the text field , and this plain text is formatted to match the database using a time package in Go library. After submitting the form, the Go HTTP handler handles the Insert query by taking all the argument values and saving them to database. 
+To make a reservation, users will select their user name and a machine from the drop down list which is loaded by GetMachine and GetUser method. The selection query gets the User ID and the Machine ID of the selected user name and machine as foreign key to the reservation database schema. Also, start and end time/date of the reservation is entered on the text field , and this plain text is formatted to match the database using a time package in Go library. After submitting the form, the Go HTTP handler handles the Insert query by taking all the argument values and saving them to database. 
 \section*{Checking Available Machines}
 The user can search the inventory for specific imformation. One of the example is the ability to search for available machines in the system as one of the requirement \ref{searchinventory}. Available machines are those machines that are free for a certain period. This feature helps users to get list of machine free to be reserved. In this process of checking available machine, the user enters a specific start date and end date in the provided text feild, and submits the query. After submiting the query, the HTTP handler processes this request, and the server calls the GetAvailableMachine method to fetch this request from the database. Go HTTP handler uses a Request functon to call the server and  ResponseWriter to respond to the HTML request \cite{Gohttp}. The server uses ListenAndServe method to listen to incoming request and to call the requested method to handle the request. In this method, we used a SQLite JOIN sub query to combine the machine and reservation database table. This combination logic allows the query to scan through both table rows using reservationID and machineID to indentify the machines that are not reserved for that time range the user entered. The logic contains SQL WHERE, OR and AND operator to perform comparisons between reservation dates and time. \cite{ANDOR}The AND operator is used to allow multiple conditions in the statement,  the OR operator is used to combine condition that are true, and the WHERE clause is used to specify condition while fetching data from database\cite{WHEREclause}. 
 \pagebreak
@@ -159,8 +163,8 @@ Below code listing shows the update function:
 	`,arch, microarch, cores, memory)
 
 \end{lstlisting}
-\section{Get Functions}
-The Get function is a method used for fetching list of machines and other devices stored in the database. Each time the user opens the web interface, the HTTP handler send server a request and server calls the GetMachines method to fetch the data from database. This information is listed in the inventory on the web interface through the HTTP Response-Writer. The Get function uses the SQLite selection query to scan through the database and select the required data.  Another usage for this Get function is fetching the details of a machine when the user click on a particular machine. It uses a SELECT query and WHERE condition in the logic, to specify the machine clicked used its unique ID. These methods is applicable to other classes (type) such as, Disks, NICs and Reservations. 
+\section{Get methods}
+The Get function is a method used for fetching list of machines and other devices stored in the database. Each time the user opens the web interface, the HTTP handler send server a request and server calls the GetMachines method to fetch the data from database. This information is listed in the inventory on the web interface through the HTTP Response-Writer. The Get methods uses the SQLite selection query to scan through the database and select the required data.  Another usage for this Get method is fetching the details of a machine when the user click on a particular machine. It uses a SELECT query and WHERE condition in the logic, to specify the machine clicked used its unique ID. This methods is applicable in other struct (type) such as, Disks, NICs and Reservations. 
  
 \section{Problems Encountered}
 During the implementations, we encountered problems such as formatting plain text to database data types. For example, some functions can parse a plain text as they are to the database, but in some cases where the values have a different data type (eg. Hardware Mac-address data type), this data cant be store as plain text.  So this problem was solved by importing special functions from the Go library to support those data types . Another issue encountered is trying to combine two database table for search queries. This problem was mostly encountered in the implementation of search query, where two tables were combined for comparing different data.  We solved this query problem by using SQL JOIN function, which normally link different data from multiple database table by scanning through them. With this problem solved, it helped us during the implementation to add more functionality to the user interface without having further error prone situations.
