@@ -2,6 +2,7 @@
 \documentclass[letterpaper,12pt]{report}
 \usepackage{thesis}
 \usepackage{adjustbox}
+\usepackage{hyperref}
 \usepackage{listings}
 \usepackage{url}
 \usepackage{lipsum}
@@ -56,7 +57,7 @@ bottom= 20 mm,}
 % can be made there.
 \thesistitle
 {
-	 Clowder: A Software for Managing Cluster Of High Performance Computers  }
+	 Clowder:  Software for Managing Cluster Of High Performance Computers  }
 	{\emph{Samson Ugwuodo}}
 	{Master of \emph{Science}}
 	{ \emph{Scientific Computing} Program}

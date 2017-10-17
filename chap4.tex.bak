@@ -21,14 +21,14 @@ The database package contains all the Go files with database related struct (cla
     \hline
     No & Package & Files\\
    \hline
-    1 &Database (pkg)& Machine.go\\
-       &&Reservation.go\\
-      &&Disk.go\\
-      &&User.go\\
+    1 &Database (pkg)& machine.go\\
+       &&reservation.go\\
+      &&disk.go\\
+      &&user.go\\
       &&nic.go\\
     \hline
-    2 &HTTP (pkg)& Handler.go\\
-    &&Server.go\\
+    2 &HTTP (pkg)& handler.go\\
+    &&server.go\\
     &&Templates(.html)\\
     \hline
   \end{tabular}
@@ -36,38 +36,12 @@ The database package contains all the Go files with database related struct (cla
 \end{table}
 
 \section{List of Struct and methods}
-In Go programming language a Struct is same as Class. It contains group of methods that perform the tasks specified in the software requirement in our design. It also methods contains the algorithms that process different  queries and schema actions. The method contains fields that represent the entities of the hardware in the system, and this fields are used as argument in the various functions. 
-\begin{table}[h!]
-  \centering
-  \label{tab:table1}
-  \begin{tabular}{l|c||r}
-    No & Struct& Methods\\
-    \hline
-    1 &machine &  initMachines()\\
-      && CreateMachine()\\
-      &&UpdateMachine()\\
-      &&GetMachines()\\
-      &&GetAvailableMachine()\\
-     \hline
-    2 &reservation & initReservation\\
-    && CreateReservation()\\
-    && GetReservation()\\
-    && FilterReservation()\\
-    && SortReservation()\\
-    \hline
-    3 &disks & initDisks\\
-    && CreateDisks()\\
-    \hline
-    4 &nics & initNICs()\\
-    && CreateNICs()\\
-    \hline
-    5 &user & initUsers()\\
-    && CreateUser()\\
-    && GetUser()
-  \end{tabular}
-  \caption{List of Struct and Methods}
-\end{table}
-
+Figure \autoref{fig:Description of Methods} shows the class diagram of the list of struct and methods with their relationships with others. It shows the group of methods that perform the tasks specified in the software requirement in our design.
+\begin{figure}[h!]
+\includegraphics[width = \linewidth]{methods.eps}
+\label{fig:Description of Methods} 
+\caption{Class Diagram showing struct and method relationships}
+\end{figure}
 \pagebreak
 \section{Description of Methods}
 \section*{Adding Machines to the system}

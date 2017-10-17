@@ -1,20 +1,27 @@
 @online{WinNT,
-  author = {MultiMedia},
+  title ={User Interface Design Basics},
+  author = {Usability.gov},
   url = {https://www.usability.gov/what-and-why/user-interface-design.html},
+  year={2017},
 }
 @online{Gohttp,
  title = {Go Listen and Serve},
- author ={Go HTTP},
+ author ={The Go Programming Language},
   url = {https://golang.org/pkg/net/http/#ListenAndServe},
+  month ={August},
+  year={2017},
 }
 @online{WHEREclause,
- author ={SQLite Where Clause},
+ title ={SQLite - WHERE Clause},
+ author ={Tutorialspoint},
   url = {https://www.tutorialspoint.com/sqlite/sqlite_where_clause.htm},
+  year ={2017},
 }
 @online{ANDOR,
 title = {SQLite Clause and usage},
-author ={SQLite AND OR Clasue},
+author ={Tutorialspoint},
   url = {https://www.tutorialspoint.com/sqlite/sqlite_and_or_clauses.htm},
+  year={2017},
 }
 @misc{PXE,
   title={Preboot Execution Environment (PXE) Specification},
@@ -23,16 +30,29 @@ author ={SQLite AND OR Clasue},
 }
 @online{NFS,
 title ={Network Installation using PXE},
-author= {C.C},
+author= {Howtos, L},
   url = {https://simms-teach.com/howtos/201-pxe-install.pdf},
+  year = {2010},
 }
 @online{DHCP,
 title ={Dynamic Host Configuration Protocol},
-author ={GeraldCombs},
+author ={Gerald, Combs},
 url ={https://wiki.wireshark.org/DHCP},
 }
 @online{JOIN,
 title ={SQL Joins Explained},
 author={SQL},
 url ={http://www.sql-join.com},
+}
+@online{Struct,
+title={Struct and Interface},
+author ={Caleb Doxsey},
+url={https://www.golang-book.com/books/intro/9}
+}
+@online{Method,
+title ={Methods},
+author={Golangbot},
+url={https://golangbot.com/methods/},
+month={may},
+year = {2017}
 }

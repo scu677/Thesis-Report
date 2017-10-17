@@ -52,17 +52,23 @@ In the software specification section \ref{searchinventory}, it is designed to h
   \end{tabular}
   \caption{test 2}
 \end{table}
+\pagebreak
+To further explain the reservation process, we have randomly generated different amount of machines and reservation to show a balance evaluation of the reservation process. Figure \autoref{mandr} shows the plot of 10 to 2000 randomly generated reservation on randomly chosen machines.
+\begin{figure}
+\includegraphics[width=\linewidth]{mandr.eps}
+\caption{Scattered plot showing different random generated reservations}
+\label{mandr}
+\end{figure}
 
 \pagebreak
 \section*{Reserving a machine}
-Reserving machine is another requirement in section \ref{makereserve} we have implemented in this software. This is the process where users choose and reserve a machine for definite time and date. When a reservation is made, the details of the reservation appears under the machine being reserved. Figure \ref{reserve} shows the evaluating process of this function, where we put details of reservation, by selecting a user name, machine and inserting start and end time/date. After submitting with the reserve button, the it appears on the inventory with other reservations list. During the testing we tried to input a wrong date and time format and we got an error as shown in figure \ref{error}. This proved that the software will not take an invalid date format for any reservation process in the system, rather it will issue a warning to the users appropriately.
-
+Reserving machine is another requirement in section \ref{makereserve} we have implemented in this software. This is the process where users choose and reserve a machine for definite time and date. When a reservation is made, the details of the reservation appears under the machine being reserved. Figure \autoref{reserve} shows the evaluating process of this function, where we put details of reservation, by selecting a user name, machine and inserting start and end time/date. After submitting with the reserve button, the it appears on the inventory with other reservations list. During the testing we tried to input a wrong date and time format and we got an error as shown in figure \autoref{error}. This proved that the software will not take an invalid date format for any reservation process in the system, rather it will issue a warning to the users appropriately.
 \begin{figure}[h]
   \includegraphics[width=\linewidth]{reserve.eps}
-  \label{reserve}
   \caption{Reservation function}
-  \end{figure}
-  
+  \label{reserve}
+\end{figure}
+
 \begin{figure}
 \includegraphics[width=\linewidth]{dateformat1.eps}
 \caption{reserving with wrong date}
@@ -73,38 +79,34 @@ Reserving machine is another requirement in section \ref{makereserve} we have im
 \caption{Error message}
 \label{error}
 \end{figure}
-\pagebreak
 
+\pagebreak
 \section*{Updating a machine}
-Update functionality as in section \ref{addmachines} allow users to change the details of a machine already stored in the database. This is to enable them update the information about each machine as needed when ever there is an upgrade in the system. We have tested this functionality by changing the entire information of a machine listed in the inventory. Figure \ref{update} shows the process of updating the inventory. This process has proved that this function performed as required because data was collected accordingly and stored with out any error.
+Update functionality as in section \ref{addmachines} allow users to change the details of a machine already stored in the database. This is to enable them update the information about each machine as needed when ever there is an upgrade in the system. We have tested this functionality by changing the entire information of a machine listed in the inventory. Figure \autoref{update2} shows the process of updating the inventory. This process has proved that this function performed as required because data was collected accordingly and stored with out any error.
+
 \begin{figure}[h]
-  \includegraphics[width=\linewidth]{update.eps}
-  \label{update}
+  \includegraphics[width=100mm, scale=0.5]{update.eps}
   \caption{Before update}
+  \label{update}
 \end{figure}
 \begin{figure}[h]
   \includegraphics[width=\linewidth]{change.eps}
-  \label{change}
   \caption{Editing machine details}
+   \label{change}
 \end{figure}
 \begin{figure}[h]
   \includegraphics[width=\linewidth]{update2.eps}
-  \label{update2}
   \caption{Updated machine properties}
+  \label{update2}
 \end{figure}
-\pagebreak
 
+\pagebreak
 \section*{Filtering inventory}
 This functionality helps user to filter the inventory using the context of desired information. User is able to filter the machines inventory with memory size. The size range is inserted in the search to get the list of machines that fall within the range. When the button is clicked, the  server returns the list of machine that falls in the range. Another type of filtering is the the drop list filter. This type has a drop down menu user select a context option to search for. For example, user can filter the machine inventory by selecting type OS micro-architecture and architect.
-\begin{figure}[h]
-  \includegraphics[width=\linewidth]{update.eps}
-  \label{fig:reserve}
-  \caption{Reservation function}
-\end{figure}
 \pagebreak
-
+\pagebreak
 \section{Performance Evaluations}
-We have evaluated the performance of this software by comparing the performance of the functionality with different sizes of data. The reason for this process is to observe how the software will perform as the system grow in size of machines and other activities. For each requirement tested we recorded their network request speed and the  layout speed. We used random generated data to increase the size of machines from 10 to 1000, and performed this same evaluation accordingly. Figure \ref{available} shows the performance of the software where we compared the event of searching for a machine in the system. The histogram progress linearly as the data increased. Other figures as well shows same progression, and that means that the performance is steady with a slight change in speed as the system data increases.
+We have evaluated the performance of this software by comparing the performance of the functionality with different sizes of data. The reason for this process is to observe how the software will perform as the system grow in size of machines and other activities. For each requirement tested we recorded their network request speed and the  layout speed. We used random generated data to increase the size of machines from 10 to 1000, and performed this same evaluation accordingly. Figure \autoref{available} shows the performance of the software where we compared the event of searching for a machine in the system. The histogram progress linearly as the data increased. Other figures as well shows same progression, and that means that the performance is steady with a slight change in speed as the system data increases.
 \begin{figure}[h]
  \includegraphics[width=\linewidth]{available.eps}
   \caption{Evaluation of software on searching inventory}
@@ -114,10 +116,10 @@ We have evaluated the performance of this software by comparing the performance 
 \begin{figure}[h]
  \includegraphics[width=\linewidth]{addmachine.eps}
   \caption{Evaluation of software on adding machines}
-  \label{addmachine}
+  \label{fig:addmachine}
 \end{figure}
 
 \begin{figure}[h]
- \includegraphics[width=\linewidth]{addreservation.eps}
+ \includegraphics[width=\linewidth]{addreservations.eps}
   \caption{Evaluation of software on making reservation}
 \end{figure}
