@@ -2,3 +2,71 @@
 \bibliographystyle{ieeetr}
 \nocite{*}
 \bibliography{ref}
+\begin{appendices}
+\chapter{Appendix A}
+Random generated number of machine and reservations for \autoref{mandr}.
+\begin{table}[h!]
+  \label{tab:Scattered plot data}
+  \begin{tabular}{l|c||r}
+    No & Number of Machines & Number of Reservations\\
+    \hline
+    1 &5 &10  \\
+    2 &10 &5 \\
+    3 & 15&550  \\
+    4 & 20&35  \\
+    5 & 50&180  \\
+    6 &100 &670 \\
+    7&150&120 \\
+    8&250&1000 \\
+    9&500&50 \\
+    10&1000&180 \\
+    11&2000&1600 \\
+  \end{tabular}
+  \caption{Scattered plot data}
+\end{table}
+
+The following table shows the data generated from Network and Layout speed of the software performance as  shown in \autoref{available}
+\begin{table}[h!]
+\label{tab:availabledata}
+\begin{tabular}{l|c||r}
+No of Machines & Network speed & layout speed\\
+\hline
+30&85&35 \\
+65&180&65 \\
+125&420&180 \\
+250&991&248 \\
+500&3100&460 \\
+1000&9000&860 \\
+2000&18000&1680 \\ 
+\end{tabular}
+\end{table}
+\chapter{Appendix B}
+Script used for random generation of machines and reservations.
+\lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
+\lstset{framextopmargin=50pt,frame=bottomline}
+\begin{lstlisting}[caption=Generating random machines and reservations]
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import sqlite3 as lite
+import sys
+import datetime
+import random
+from datetime import date
+
+con = lite.connect('clowder.db')
+
+with con:
+
+    cur = con.cursor()
+
+    cur.execute("INSERT INTO Machines WITH RECURSIVE mch(id, name, arch, microarch, cores, memory)AS(SELECT random(),abs(random()% 100),abs(random()%10),abs(random()%10),abs(random()%12),abs(random() %12)UNION ALL SELECT random(),abs(random() % 100),abs(random()%10),abs(random()%10),abs(random()%12),abs(random()%12)FROM mch LIMIT ) select * from mch;")
+    cur.execute("INSERT INTO Reservations WITH RECURSIVE res(id,user,machine,start,end,ended,pxepath,nfsroot)AS(SELECT random(),(SELECT users.id from Users),(SELECT machines.id FROM Machines),abs(random()% (strftime('%s','2017-10-31 23:59'))),strftime('%s','2017-01-01 00:00') + abs(random()% (strftime('%s','2018-01-31 23:59') - strftime('%s','2017-01-01 00:00'))),NULL,abs(random()%10),abs(random()%10)UNION ALL SELECT random(),(SELECT users.id from Users),(SELECT machines.id FROM Machines),abs(random()% (strftime('%s','2017-01-31 23:59'))),strftime('%s','2017-01-01 00:00') + abs(random()% (strftime('%s','2018-01-31 23:59') - strftime('%s','2017-01-01 00:00'))),NULL,abs(random()%10),abs(random()%10)FROM res LIMIT )select * from res;")
+
+if con:
+
+    con.close()
+
+
+\end{lstlisting}
+\end{appendices}

@@ -1,6 +1,7 @@
 
 \documentclass[letterpaper,12pt]{report}
 \usepackage{thesis}
+\usepackage[toc,page]{appendix}
 \usepackage{adjustbox}
 \usepackage{hyperref}
 \usepackage{listings}
