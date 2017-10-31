@@ -20,7 +20,7 @@ Another requirement of this software is the ability to make reservations: users 
 As new machines are added to the cluster, the Add-data functionality allows users to add details of those machines to the database and update the inventory. Likewise, when the user want to change a certain properties of the machines such as, memory size or disk, the Update-data functionality helps to validate  this changes in the database.
 
 \section{Design}
-The design structure comprises the various  segments and element of the user interface (front end) combined with the database (back end)  and the control protocols. Figure~\ref{fig:Design} describe the main structure of the design in terms of operation.
+The design structure comprises the various  segments and element of the user interface (front end) combined with the database (back end)  and the control protocols. In this design some of the component such as the database structure has been worked on by others, so I added more functionality during the implementation that contributed to the requirements. I worked on  methods that helps in searching for unreserved machines, sorting data, updating data and filtering inventory, making reservations and creating new Disks and NICs.  Figure~\ref{fig:Design} describe the main structure of the design in terms of operation.
 \begin{figure}[h]
   \includegraphics[width=\linewidth]{Design.eps}
   \caption{The Design}

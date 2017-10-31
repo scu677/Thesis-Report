@@ -2,6 +2,7 @@
 \bibliographystyle{ieeetr}
 \nocite{*}
 \bibliography{ref}
+
 \begin{appendices}
 \chapter{Appendix A}
 Random generated number of machine and reservations for \autoref{mandr}.
@@ -25,11 +26,11 @@ Random generated number of machine and reservations for \autoref{mandr}.
   \caption{Scattered plot data}
 \end{table}
 
-The following table shows the data generated from Network and Layout speed of the software performance as  shown in \autoref{available}
+The following table shows the data generated from Network and Layout time of the software performance as  shown in \autoref{available}, \autoref{addmachine} and \autoref{addreservation}.
 \begin{table}[h!]
 \label{tab:availabledata}
 \begin{tabular}{l|c||r}
-No of Machines & Network speed & layout speed\\
+No of Machines & Network Time(ms) & Layout Time(ms)\\
 \hline
 30&85&35 \\
 65&180&65 \\
@@ -40,33 +41,34 @@ No of Machines & Network speed & layout speed\\
 2000&18000&1680 \\ 
 \end{tabular}
 \end{table}
-\chapter{Appendix B}
-Script used for random generation of machines and reservations.
-\lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
-\lstset{framextopmargin=50pt,frame=bottomline}
-\begin{lstlisting}[caption=Generating random machines and reservations]
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 
-import sqlite3 as lite
-import sys
-import datetime
-import random
-from datetime import date
+\begin{table}[h!]
+\label{tab:availabledata}
+\begin{tabular}{l|c||r}
+No of Machines & Network Time(ms) & layout Time(ms)\\
+\hline
+30&62&25 \\
+65&134&43 \\
+125&280&80 \\
+250&571&170 \\
+500&1000&380 \\
+1000&1700&810 \\
+2000&2550&1800 \\ 
+\end{tabular}
+\end{table}
 
-con = lite.connect('clowder.db')
-
-with con:
-
-    cur = con.cursor()
-
-    cur.execute("INSERT INTO Machines WITH RECURSIVE mch(id, name, arch, microarch, cores, memory)AS(SELECT random(),abs(random()% 100),abs(random()%10),abs(random()%10),abs(random()%12),abs(random() %12)UNION ALL SELECT random(),abs(random() % 100),abs(random()%10),abs(random()%10),abs(random()%12),abs(random()%12)FROM mch LIMIT ) select * from mch;")
-    cur.execute("INSERT INTO Reservations WITH RECURSIVE res(id,user,machine,start,end,ended,pxepath,nfsroot)AS(SELECT random(),(SELECT users.id from Users),(SELECT machines.id FROM Machines),abs(random()% (strftime('%s','2017-10-31 23:59'))),strftime('%s','2017-01-01 00:00') + abs(random()% (strftime('%s','2018-01-31 23:59') - strftime('%s','2017-01-01 00:00'))),NULL,abs(random()%10),abs(random()%10)UNION ALL SELECT random(),(SELECT users.id from Users),(SELECT machines.id FROM Machines),abs(random()% (strftime('%s','2017-01-31 23:59'))),strftime('%s','2017-01-01 00:00') + abs(random()% (strftime('%s','2018-01-31 23:59') - strftime('%s','2017-01-01 00:00'))),NULL,abs(random()%10),abs(random()%10)FROM res LIMIT )select * from res;")
-
-if con:
-
-    con.close()
-
-
-\end{lstlisting}
+\begin{table}[h!]
+\label{tab:availabledata}
+\begin{tabular}{l|c||r}
+No of Machines & Network Time(ms)& Layout Time(ms)\\
+\hline
+30&147&37 \\
+65&231&52 \\
+125&445&74 \\
+250&870&120 \\
+500&1300&340 \\
+1000&2800&447 \\
+2000&3960&830 \\ 
+\end{tabular}
+\end{table}
 \end{appendices}
