@@ -2,24 +2,24 @@
 \label{chap:ch4_abbr}
 \label{chap:figtab}
 \section{Review}
-The software implementation showcase the functionality of all the requirements as described previously. This functionality include the ability to input data and retrieve data through the system. We have accomplished this task by implementing the design structure. This include the choice of tools used for the development and the design approach. It was implemented to demonstrate the realization of the proposed specifications especially features such as making reservations in the system.
+The software implementation showcases the functionality of all the requirements as described in section \ref{requirements}. This functionality includes the ability to input data and retrieve data through the system. We have accomplished this task by implementing the designed structure. This include the choice of tools used for the development and the design approach. It was implemented to demonstrate the realization of the proposed specifications.
 \section{Implementation tools}
- The user interface is implemented on the internet web browser using local server port as web address. The web browser serves as the environment for testing and implementing the front-end (user interface) of the software, and while the HTML template and Go library is used for the development. The database was developed using the SQLite model schema. The Go HTTP server provides connections between the front-end and back-end implementation. It servers as a channel for parsing request through user interface and database. We used a local TCP network for this implementation.  These tools provided all the necessary component to address the requirements for this software. 
+ The user interface is implemented on the internet web browser using server port as web address. The web browser serves as the environment for testing the front-end (user interface) of the software, while the HTML template and Go library is used for development. The database was developed using the SQL model schema. The Go HTTP server provides connections between the front-end and back-end implementation. It servers as a channel for parsing request through user interface and database. These tools provided all the necessary components to address the requirements for this software. 
 \section{Program Structure} \label{Programstructure}
-The Go programming language has a fundamental development structure that is categorized into packages. The packages contains a group of program file with dependencies that links them together. For this software design, we have written two main package to actualize the development goal. In addition to other people's works in these packages, I have added more files with numerous methods and functions of couple or more thousand lines of SQLite, Go and HTML codes that improves the system requirements. These packages includes:
+The Go programming language has a development structure that is categorized into packages, see \ref{gostruct}. The packages contains a group of program file with dependencies that links them together. For this software design, we have written two main package to actualize the development goal. In addition to other people's works in these packages, I have added more files with numerous methods and functions of couple or more thousand lines of SQLite, Go and HTML codes that improves the system requirements. These packages includes:
 \begin{description}
 \item[$\bullet$]Database package 
 \item[$\bullet$]HTTP package 
 \end{description}
 
-The database package contains all the Go files with database related struct (class). The Go objects represent the same data as in the database. And each Go struct depends on this package as the object-relational mapping tool (ORM) between other struct and database resources. The HTTP package also contain some Go file relates to the user interface ( for example the function Handler) and HTML files. the HTML files contains several templates for the web interface content and elements. These file depends on the HTTP package for serving the web contents and post requests. Below is a table describing the list of files in each packages.
+The database package contains all the Go files with database related struct. The Go objects represent the same data as in the database. And each Go struct depends on this package as the object-relational mapping tool (ORM) between other struct and database resources. The HTTP package also contain some Go file relates to the user interface (for example the function handler) and HTML files. The HTML files contains several templates for the web interface content and elements. These files depends on the GO HTTP package for serving web contents and post requests. \ref{table1} describes the list of files in each package.
 \pagebreak
 \begin{table}[h!]
   \centering
-  \label{tab:table1}
+  \label{table1}
   \begin{tabular}{ccc}
     \hline
-    No & Package & Files\\
+    No & Package & File\\
    \hline
     1 &Database (pkg)& machine.go\\
        &&reservation.go\\
@@ -29,18 +29,18 @@ The database package contains all the Go files with database related struct (cla
     \hline
     2 &HTTP (pkg)& handler.go\\
     &&server.go\\
-    &&Templates(.html)\\
+    &&HTML templates\\
     \hline
   \end{tabular}
   \caption{Program packages}
 \end{table}
 
-\section{List of Struct and methods}
-\autoref{Methods} shows the class diagram of the list of struct and methods with their relationships with others. It shows the group of methods that perform the tasks specified in the software requirement in our design.
+\section{List of Struct and Methods}
+\autoref{Method1} shows the class diagram of the list of struct and methods with their relationships with others. It shows the group of methods that perform the tasks specified in the software requirement in our design.
 \begin{figure}[h!]
 \includegraphics[width = \linewidth]{methods.eps}
-\label{Methods} 
 \caption{Class Diagram showing struct and method relationships}
+\label{Method1} 
 \end{figure}
 \pagebreak
 \section{Description of Methods}

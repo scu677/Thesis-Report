@@ -1,7 +1,7 @@
 \chapter{Design and Requirements}
 \label{chap:figtab}
 \label{chap}
-\section{Requirements}
+\section{Requirements} \label{requirements}
 The objective of this software is to  design a dynamic user interface and a functional database system. With regard to that, the specification is made up of necessary features and functionality that must appear on the user interface. The following are the major specification of this software:
 \begin{description}
 \item[$\bullet$] Data Inventory
@@ -33,25 +33,25 @@ We augmented web interface that provides  flexible and dynamic access to the sys
 The web interface represents the user interface (UI) where users get access to the system. It is part of the design that represents the front end of the software.The web interface elements controls the basic functionality for data input and out put. It represent each feature as mentioned in the specification. This web interface structure is designed using  HTML template for the front end and Go programming language for the back end. 
 The web interface contains all the necessary elements required to have dynamic and flexible access to the system. These elements include Forms and Input controls.
 \subsection*{Forms}
- Forms are one  of the elements that provides the ability to input data to the database. The data is submitted through a HTML post request \cite{WinNT}. The post forms are used for submitting data such as machines and reservations details. The form is designed with elements which includes; id and name attributes for identifying data, text fields for collecting data, select menus for selecting data options and submit button for submitting the data. When data is submitted with HTML form, the Go HTTP framework in the web server call the Go function handler to process and parse this data to the database.  After the data (example: a database query) is processed, the Go program generates an HTML page (such as machines inventory), which the server returns to the web interface. In this system design, the forms are used for creating new machines, disks, NICs and making reservation. 
+ Forms are one  of the elements that provides the ability to input data to the database. The data is submitted through a HTTP POST request \cite{WinNT}. The post forms are used for submitting data such as machines and reservations details. The form is designed with elements which includes id and name attributes for identifying data, text fields for collecting data, select menus for selecting data options and submit button for submitting the data. When data is submitted with HTTP form, the Go HTTP framework in the web server call a registered Go function handler to process and parse this data to the database.  After the data (example: a database query) is processed, the Go program generates an HTML page (such as machines inventory), which the server returns to the web interface. In this system design, the forms are used for creating new machines, disks, NICs and making reservation. 
 \subsection*{Input Controls}
 The input control in this web interface provides the necessary components that supports the functionality of the software. There are numerous HTML input control, but we have chosen a few that satisfy our specifications. These input controls include text fields, buttons, date fields, drop down list and list box. They are used for both input and output functions like listing the inventory, inserting texts, to update data, to send queries, viewing selection options and searching inventory. These controls are designed with HTML tags and HTML template.
-\subsection{Server}
-The server is responsible for parsing all request from the web interface to the database and command protocol. When request is made on the web interface (for instance available machine on database), the server calls the  specific function to handle this request by providing the necessary resources. Likewise the server interchange communication between the user interface and the database system for executions and requests. 
+\subsection{Web Server}
+The server is responsible for parsing all request from the web interface to the database and command protocol. When a request is made on the web interface (for instance querying available machines), the server calls the a function to handle this request by providing the necessary resources. Likewise the server interchange communication between the user interface and the database system for executions and requests. 
 \begin{figure}[h!]
 \includegraphics[width = \linewidth]{server.eps}
 \label{fig:Description of Server Activity} 
 \caption{Server Activity Description}
 \end{figure}
 \subsection{Database}
-The database is another major component of this system, because it is provides storage and resource for the system. The data includes reservation records, machine details, disks, and NICs information. The database is designed with SQLite model using Go programming language as the back end tech. SQLite was used here as prototype because it is fast and easy to set up. We created a functional database system that suites the specification of the software. 
-The database scheme contains tables of machines, user record, reservation, NICs (network interface cards) and disks.  One of the function of the software is the ability to make reservations.  Below show a typical model of the database design.
+The database is another major component of this system, because it is provides storage and resource for the system. The data includes reservation records, machine details, disks, and NICs information. The database is designed with SQL model using Go programming language as the back end tech. SQL was used here as prototype because it is fast and easy to set up. We created a functional database system that address the specification of the software. 
+The database scheme contains tables of machines, user record, reservation, NICs (network interface cards) and disks.  One of the functions of the software is the ability to make reservations. \autoref{Databaseschema} shows a typical model of the database design.
  \begin{figure}[h!]
 \includegraphics[width = \linewidth]{database.eps}
-\label{fig:Database Schema} 
+\label{Databaseschema} 
 \caption{Database design}
 \end{figure}
 \pagebreak
-\subsection{Data flow and  protocols}
-The data flows from the user interface via the server to the database. We used Go HTTP handler to process data received from the HTML form to be stored in the database. The server initiate each method (function) when the HTTP handler sends a request. For example, when users search for list of information such as machine details, the request is sent through the server as a query, and the specific Go function is called to fetch the data from the designated database. This process controls the sequence of data flow in the system. It controls data input, handling and output. This protocol help the dynamic functionality on the user interface to perform in the system and also provides automatic command rather than manual query routine performed on command line. 
+\subsection{Data Flow}
+The data flows from the user interface via the web server to the database. We used Go HTTP handler to process data received from the HTML form to be stored in the database. The server initiates each method (function) when the HTTP handler sends a request. For example, when users search for list of information such as machine details, the request is sent through the server as a query, and the appropriate Go function is called to fetch the data from the designated database. This process controls the sequence of data flow in the system. It controls data input, handling and output. This protocol helps the dynamic functionality on the user interface to perform in the system and also provides automatic command rather than manual query routine performed on command line. 
 
