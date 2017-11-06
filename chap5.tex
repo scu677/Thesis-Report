@@ -8,7 +8,7 @@ In the software specification section \ref{searchinventory}, it is designed to h
 To further explain the reservation process, we have randomly generated different amount of machines and reservations to show a balanced evaluation of the reservation process.\autoref{mandr} shows the plot of 2 to 2000 randomly generated reservation on randomly chosen machines. So after the random generation of different reservations on different machines, I used a set of 5 machines with 10 reservations to evaluate another test case as shown in \autoref{randreserve}. Here we can see the search result obtained from seven set of date searched for on this random data.
 \begin{figure}
 \includegraphics[width=\linewidth]{mandr.eps}
-\caption{Scattered plot showing different random generated reservations}
+\caption{Scatter plot showing different random generated reservations}
 \label{mandr}
 \end{figure}
 
@@ -51,7 +51,7 @@ Reserving machine is another requirement in section \ref{makereserve} we have im
 \end{figure}
 
 \begin{figure}
-\includegraphics[width=\linewidth]{dateformat1.eps}
+\includegraphics[width=100mm, scale=0.5]{dateformat1.eps}
 \caption{Reserving with wrong date}
 \end{figure}
 
@@ -76,7 +76,7 @@ Update functionality as in section \ref{addmachines} allow users to change the d
    \label{change}
 \end{figure}
 \begin{figure}[h]
-  \includegraphics[width=\linewidth]{update2.eps}
+  \includegraphics[width=100mm, scale=0.5]{update2.eps}
   \caption{Updated machine properties}
   \label{update2}
 \end{figure}
@@ -87,7 +87,7 @@ This functionality helps user to filter the inventory using the context of desir
 \pagebreak
 \pagebreak
 \section{Performance Evaluations}
-We have evaluated the performance of this software by comparing the performance of the functionality with different sizes of data. The reason for this process is to observe how the software will perform as the system grow in size of machines and other activities. For each requirement tested we recorded their network request speed and the  layout speed. We used random generated data to increase the size of machines from 10 to 1000, and performed this same evaluation accordingly. \autoref{available} shows the performance of the software where we compared the event of searching for a machine in the system. The histogram progress linearly as the data increased. Other figures as well shows same progression, and that means that the performance is steady with a slight change in speed as the system data increases.
+We have evaluated the performance of this software by comparing the performance of the functionality with different sizes of data. The reason for this process is to observe how the software will perform as the system grow in size of machines and other activities. For each requirement tested we recorded their network request speed and the  layout speed. We used random generated data to increase the size of machines from 10 to 1000, and performed this same evaluation accordingly. \autoref{available} shows the performance of the software where we compared the event of searching for a machine in the system. The graph points progress partially linear as the data increased. Other figures as well shows same progression, and that means that the performance is steady with a slight change in speed as the system data increases.
 \begin{figure}[h]
  \includegraphics[width=\linewidth]{available.eps}
   \caption{Evaluation of software on searching inventory}

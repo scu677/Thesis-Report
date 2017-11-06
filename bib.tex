@@ -5,6 +5,33 @@
 
 \begin{appendices}
 \chapter{Appendix A}
+\autoref{randscript1} shows the basic python script used for random generated machines and reservations.
+\lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
+\lstset{framextopmargin=50pt,frame=bottomline}
+\begin{lstlisting}[caption=Script for generated data, label=randscript1]
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import sqlite3 as lite
+import sys
+import datetime
+import random
+from datetime import date
+
+con = lite.connect('clowder.db')
+
+with con:
+
+    cur = con.cursor()
+
+    cur.execute("INSERT INTO Machines WITH RECURSIVE mch(id, name, arch, microarch, cores, memory)AS(SELECT random(),abs(random()% ),abs(random()%),abs(random()%),abs(random()%),abs(random() %)UNION ALL SELECT random(),abs(random() %),abs(random()%),abs(random()%),abs(random()%),abs(random()%)FROM mch LIMIT 0 ) select * from mch;")
+    
+     cur.execute("INSERT INTO Reservations WITH RECURSIVE res(id,user,machine,start,end,ended,pxepath,nfsroot)AS(SELECT random(),(SELECT users.id from Users),(SELECT machines.id FROM Machines),abs(random() (strftime('%s','2017-10-31 23:59'))),strftime('%s','2017-01-01 00:00') + abs(random()% (strftime('%s','2018-01-31 23:59') - strftime('%s','2017-01-01 00:00'))),NULL,abs(random()%),abs(random()%)UNION ALL SELECT random(),(SELECT users.id from Users),(SELECT machines.id FROM Machines),abs(random()% (strftime('%s','2017-01-31 23:59'))),strftime('%s','2017-01-01 00:00') + abs(random()% (strftime('%s','2018-01-31 23:59') - strftime('%s','2017-01-01 00:00'))),NULL,abs(random()%),abs(random()%)FROM res LIMIT 0 )select * from res;")
+if con:
+    con.close()
+
+\end{lstlisting}
+\chapter{Appendix B}
 Random generated number of machine and reservations for \autoref{mandr}.
 \begin{table}[h!]
   \label{tab:Scattered plot data}
