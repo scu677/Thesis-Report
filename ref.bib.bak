@@ -1,9 +1,9 @@
-@online{WinNT,
-  title ={User Interface Design Basics},
-  author = {Usability.gov},
-  note={Available at \url{https://www.usability.gov/what-and-why/user-interface-design.html}}'
-  url = {https://www.usability.gov/what-and-why/user-interface-design.html},
-  year={2017},
+
+@book{WinNT,
+  title={Information architecture for the world wide web},
+  author={Rosenfeld, Louis and Morville, Peter},
+  year={2002},
+  publisher={" O'Reilly Media, Inc."}
 }
 @online{Gohttp,
  title = {Go Listen and Serve},
@@ -12,11 +12,11 @@
   month ={August},
   year={2017},
 }
-@online{WHEREclause,
- title ={SQLite - WHERE Clause},
- author ={Tutorialspoint},
-  note={Available at:\url{https://www.tutorialspoint.com/sqlite/sqlite_where_clause.htm}},
-  year ={2017},
+@book{WHEREclause,
+  title={Using SQLite},
+  author={Kreibich, Jay},
+  year={2010},
+  publisher={" O'Reilly Media, Inc."}
 }
 @online{ANDOR,
 title = {SQLite Clause and usage},
@@ -24,15 +24,16 @@ author ={Tutorialspoint},
   note={Available at:\url{https://www.tutorialspoint.com/sqlite/sqlite_and_or_clauses.htm}},
   year={2017},
 }
-@misc{PXE,
-  title={Preboot Execution Environment (PXE) Specification},
+@techreport{PXE,
+  title={DHCP Preboot Execution Environment (PXE) Options draft-ietf-dhc-pxe-options-01},
   author={Johnston, M},
-  year={1999},
+  year={2005},
+  institution={txt, Internet-Draft}
 }
 @online{NFS,
 title ={Network Installation using PXE},
 author= {Howtos, L},
-  url = {https://simms-teach.com/howtos/201-pxe-install.pdf},
+ note= {Available at :\url{https://simms-teach.com/howtos/201-pxe-install.pdf}},
   year = {2010},
 }
 @online{DHCP,
@@ -45,15 +46,22 @@ title ={SQL Joins Explained},
 author={SQL},
 note={Available at: \url {http://www.sql-join.com}},
 }
+@misc{SQLJOIN,
+  title={Optimization of SQL queries using early-out join transformations of column-bound relational tables},
+  author={Pirahesh, Mir H and Leung, Ting Y and Lohman, Guy M and Shekita, Eugene J and Simmen, David E},
+  year={1996},
+  month=aug # "~20",
+  publisher={Google Patents},
+  note={US Patent 5,548,758}
+}
 @online{Struct,
 title={Struct and Interface},
 author ={Caleb Doxsey},
 note={Available at :\url{https://www.golang-book.com/books/intro/9}}
 }
-@online{Method,
-title ={Methods},
-author={Golangbot},
-url={https://golangbot.com/methods/},
-month={may},
-year = {2017}
+@book{Method,
+  title={The Go programming language},
+  author={Donovan, Alan AA and Kernighan, Brian W},
+  year={2015},
+  publisher={Addison-Wesley Professional}
 }
