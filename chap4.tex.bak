@@ -4,15 +4,15 @@
 \section{Review}
 The software implementation showcases the functionality of all the requirements as described in section \ref{requirements}. This functionality includes the ability to input data and retrieve data through the system. We have accomplished this task by implementing the designed structure. This include the choice of tools used for the development and the design approach. It was implemented to demonstrate the realization of the proposed specifications.
 \section{Implementation tools}
-The user interface is implemented on the internet web browser using server port as web address. The web browser serves as the environment for testing the front-end (user interface) of the software, while the HTML template and Go library is used for development. The database was developed using the SQL model schema. The Go HTTP server provides connections between the front-end and back-end implementation. It servers as a channel for parsing request through user interface and database. These tools provided all the necessary components to address the requirements for this software. 
+The user interface is implemented on the internet web browser using a local port. The web browser serves as the environment for testing the front-end (user interface) of the software, while the HTML templates and Go library are used for development. The database was developed using the SQL model schema. The Go HTTP server provides connections between the front-end and back-end implementation. It serves as a channel for parsing requests through the user interface and database. These tools provided all the components necessary to address the requirements for this software. 
 \section{Program Structure} \label{Programstructure}
-The Go programming language has a development structure that is categorized into packages, see \autoref{programpack}. The packages contains a group of program file with dependencies that links them together. For this software design, we have written two main package to actualize the development goal. In addition to other people's works in these packages, I have added more files with numerous methods and functions of couple or more thousand lines of SQLite, Go and HTML codes that improves the system requirements. These packages includes:
+The Go programming language has a development structure that is categorized into packages, see \autoref{programpack}. The packages contains a group of program file with dependencies that link them together. For this software design, we have written two main packages to actualize the development goal. In addition to other people's works in these packages, We have added more files with numerous methods and functions of couple or more thousand lines of SQLite, Go and HTML codes that improves the system requirements. These packages include:
 \begin{description}
 \item[$\bullet$]Database package 
 \item[$\bullet$]HTTP package 
 \end{description}
 
-The database package contains all the Go files with database related struct. The Go objects represent the same data as in the database. And each Go struct depends on this package as the object-relational mapping tool (ORM) between other struct and database resources. The HTTP package also contain some Go file relates to the user interface (for example the function handler) and HTML files. The HTML files contains several templates for the web interface content and elements. These files depends on the GO HTTP package for serving web contents and post requests. \autoref{programpack} describes the list of files in each package.
+The database package contains all the Go files with database-related structs. The Go objects represent the same data as in the database. And each Go struct depends on this package as the object-relational mapping tool (ORM) between other structs and database resources. The HTTP package also contains some Go file related to the user interface (for example the function handles) and HTML files. The HTML files contains several templates for the web interface content and elements. These files depends on the GO HTTP package for serving web contents and post requests. \autoref{programpack} describes the list of files in each package.
 \pagebreak
 \begin{table}[h!]
   \centering
@@ -28,7 +28,9 @@ The database package contains all the Go files with database related struct. The
     \hline
     2 &HTTP (pkg)& handler.go\\
     &&server.go\\
-    &&HTML templates\\
+    &&frontpage.html\\
+    &&machine.html\\
+    &&reservation.html\\
     \hline
   \end{tabular}
   \caption{Program packages}
@@ -43,12 +45,13 @@ The database package contains all the Go files with database related struct. The
 \label{sm} 
 \end{figure}
 \pagebreak
-\section{Description of Methods}
+\section{Implementation of Required Functionality}
 \section*{Adding Machines to the system}
-Adding machines and other devices to the system is one of the software requirements in section \ref{addmachines}. On the user interface, the software provides a text field and forms where users can enter details of machines to be saved as data in the database. The InitMachine method create a new database schema with defined table fields where data is stored. When the user submits a Add Machine form, the InitMachine create the database schema where the machine details is stored. It uses type (Machine) fields as argument for creating the schema fields. \autoref{Initializingdatabase} is the code listing for creating database:
+Adding machines and other devices to the system is one of the software requirements in section \ref{addmachines}. On the user interface, the software provides a text field and forms where users can enter details of machines to be saved as data in the database. The initMachines method create a new database schema with defined table fields where data is stored. When the user submits a Add Machine form, the data is stored in the table created by initMachines. 
+ \autoref{Initializingdatabase} is the code listing for creating the database:
 \lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
 \lstset{framextopmargin=50pt,frame=bottomline}
-\begin{lstlisting}[caption=Creating Database for machine, label=Initializingdatabase]
+\begin{lstlisting}[caption=Creating table for machine, label=Initializingdatabase]
 func initMachines(tx *sql.Tx) error {
 	_, err := tx.Exec(`
 	CREATE TABLE Machines(
@@ -57,7 +60,7 @@ func initMachines(tx *sql.Tx) error {
 	return err
 }
 \end{lstlisting}
-The CreateMachine method is responsible for parsing the data to the database schema. It uses the SQLite INSERT query to parse a give data using the arguments to the database. When the user submit a form (AddMachine), the Go HTTP handler process this form by converting the plan text to a form data according to their data types defined in the schema, and then call the CreateMachine to insert this data to the database. \autoref{Addingmachine2} shows the code list.
+The CreateMachine method is responsible for inserting data to the database schema. It uses the SQLite INSERT query to parse the given data using the arguments to the database. When the user submits a form (AddMachine), the Go HTTP handler processes this form by converting the plain text to a data according to their data types defined in the schema, and then calls the CreateMachine to insert this data in the database. \autoref{Addingmachine2} shows the code list.
 \begin{lstlisting}[caption=Adding machines details, label=Addingmachine2]
 func (d DB) CreateMachine(name string, arch string,
 	microarch string, cores int, memoryGB int) error {
@@ -73,14 +76,15 @@ func (d DB) CreateMachine(name string, arch string,
 \end{lstlisting}
 
 \section*{Making a Reservation}
-The reservation process is similar to creating a machine but here it requires the User ID and Machine ID as foreign keys in creating the database schema \ref{makereserve}. The User ID is used for selecting the user making the reservation, and Machine ID for selecting the machine to be reserved. On the web interface (reservation page), the form has a drop down list where users can select their user name and the machine they want to reserve. When users open the reservation page to create new reservation, the HTML form use the post request to get list of machines and user name on the drop-down list.
-PSEUDOCODE:
+The reservation process is similar to creating a machine but it requires the User ID and Machine ID as foreign keys in creating a reservation \ref{makereserve}. The User ID is used for selecting the user making the reservation, and Machine ID for selecting the machine to be reserved. On the web interface (reservation page), the form has a drop down list where users can select their user name and the machine they want to reserve. When users open the reservation page to create new reservation, the HTML form use the post request to get list of machines and user name on the drop-down list.
+\begin{lstlisting}[caption=Pseudocode, label=addreservation]
 \begin{enumerate}
 \item Input reservation values in the field.
 \item Select machine id from the list where machine name is chosen.
 \item Select user id from the list of user where name is chosen.
 \item Insert all the values to reservation table and return.
 \end{enumerate}
+\end{lstlisting}
 \begin{lstlisting}[caption=Storing Reservation details, label=Adding reservation]
 	_, err := d.sql.Exec(`
 			INSERT INTO Reservations(machine,user,start,end,
@@ -94,18 +98,8 @@ PSEUDOCODE:
 
 To make a reservation, users select their user name and a machine from the drop down list which is loaded by GetMachine and GetUser method. The selection query gets the User ID and the Machine ID of the selected user name and machine as foreign key to the reservation database schema. Also, start and end time/date of the reservation is entered on the text field , and this plain text is formatted to match the database using a time package in Go library. After submitting the form, the Go HTTP handler handles the Insert query by taking all the argument values and saving them to database. 
 \section*{Checking Available Machines}
-The user can search the inventory for specific imformation. One of the example is the ability to search for available machines in the system as one of the requirement \ref{searchinventory}. Available machines are those machines that are free for a certain period. This feature helps users to get list of machine free to be reserved. In this process of checking available machine, the user enters a specific start date and end date in the provided text feild, and submits the query. After submiting the query, the HTTP handler processes this request, and the server calls the GetAvailableMachine method to fetch this request from the database. In this method, we used a SQLite JOIN sub query to combine the machine and reservation database table. This combination logic allows the query to scan through both table rows using reservationID and machineID to indentify the machines that are not reserved for that time range the user entered. The logic contains SQL WHERE, OR and AND operator to perform comparisons between reservation dates and time. \cite{ANDOR}The AND operator is used to allow multiple conditions in the statement,  the OR operator is used to combine condition that are true, and the WHERE clause is used to specify condition while fetching data from database\cite{WHEREclause}. 
+The user can search the inventory for specific information. One example is the ability to search for available machines in the system as per requirement \ref{searchinventory}. Available machines are those machines that are free for a certain period. This feature helps users to get list of machine free to be reserved. In this process of checking available machines, the user enters a specific start date/time and end date/time in the provided text field, and submits the query. After submiting the query, the HTTP handler processes this request, and the server calls the GetAvailableMachine method to fetch this request from the database. In this method, we used a SQLite JOIN sub query to combine the machine and reservation database table. It helps to indentify the machines that are not reserved for that time range the user entered. The logic contains SQL WHERE, OR and AND operator to perform comparisons between reservation dates and time. \cite{ANDOR}The AND operator is used to allow multiple conditions in the statement,  the OR operator is used to combine conditions that are true, and the WHERE clause is used to specify condition while fetching data from database\cite{WHEREclause}. 
 \autoref{SAM} shows the function and query for this operation.
-PSEUDOCODE:
-\begin{enumerate}
-\item Set the function arguments.
-\item Query rows in machine table and select where id is not reserved.
-\item Query rows in reservation and select machine where reserved outside of the search dates START and END date. 
-\item Combine the values from the two tables.
-\item Assign the selected values to the row and return the values.
-\item Return values selected 
-\end{enumerate}
-
 \begin{lstlisting}[caption=Searching available, label=SAM]
 func(d DB) Filter_M_By_Dates(from time.Time, to time.Time) ([]Machine, error){
 
@@ -120,8 +114,8 @@ func(d DB) Filter_M_By_Dates(from time.Time, to time.Time) ([]Machine, error){
 	); `, from, to, from, to, from, to)
 \end{lstlisting}
 \section*{Updating Machines details}
-As part of the software requirements, users can change the information stored in the database. This is done on the web interface using text box that is attached to every field with that requirement. Example is updating the information of a particular computer or disks when the hardware is upgraded. In this case, the UpdateMachine method performs this action by using the SQLite update query. This update query opens the database schema of the machine and replaces the existing data with a new one.
-\autoref{Updatefunction} code listing shows the update function:
+As part of the software requirements \ref{addmachines}, users can change the information stored in the database. This is done on the web interface using text box that is attached to every field with that requirement. An example is updating the information of a particular computer or disk when the hardware is upgraded. In this case, the UpdateMachine method performs this action by using the SQLite update query. This update query opens the database schema of the machine and replaces the existing data with a new one.
+\autoref{Updatefunction} code listing shows the update function.
 \begin{lstlisting}[caption=Function for Updating data, label=Updatefunction]
 
 	_, err := d.sql.Exec(`
@@ -132,11 +126,11 @@ As part of the software requirements, users can change the information stored in
 	`,arch, microarch, cores, memory)
 
 \end{lstlisting}
-\section{Get methods}
-The Get function is a method used for fetching list of machines and other devices stored in the database. Each time the user opens the web interface, the HTTP handler send server a request and server calls the GetMachines method to fetch the data from database. This information is listed in the inventory on the web interface through the HTTP Response-Writer. The Get methods uses the SQLite selection query to scan through the database and select the required data.  Another usage for this Get method is fetching the details of a machine when the user click on a particular machine. It uses a SELECT query and WHERE condition in the logic, to specify the machine clicked used its unique ID. This methods is applicable in other struct (type) such as, Disks, NICs and Reservations. 
+\section{Get method}
+The Get method is used for fetching lists of machines and other devices stored in the database. Each time the user opens the web interface, the HTTP handler sends the server a request and the server calls the GetMachines method to fetch the data from database. This information is listed in the inventory on the web interface through the HTTP Response-Writer. The Get method use the SQLite selection query to scan through the database and select the required data.  Another usage for Get method is fetching the details of a machine when the user clicks on a particular machine. A SELECT query and WHERE condition are used in the logic, to specify the machine clicked used its unique ID. This concept is applicable in other struct (type) such as, Disks, NICs and Reservations. 
  
 \section{Problems Encountered}
-During the implementations, we encountered problems such as formatting plain text to database data types. For example, some functions can parse a plain text as they are to the database, but in some cases where the values have a different data type (eg. Hardware Mac-address data type), this data cant be store as plain text.  So this problem was solved by importing special functions from the Go library to support those data types. Another issue encountered is trying to combine two database table for search queries. This problem was mostly encountered in the implementation of search query, where two tables were combined for comparing different data.  We solved this query problem by using SQL JOIN function, which normally link different data from multiple database table by scanning through them. With this problem solved, it helped us during the implementation to add more functionality to the user interface without having further error prone situations.
+During the implementation, we encountered problems such as parsing plain text to database data types. For example, some functions can parse plain text as they are to the database, but in some cases where the values have a different data type (eg. Hardware Macaddress) cant be store as plain text. So this problem was solved by importing functions from the Go library to support those data types. Another issue encountered is trying to combine two database table for search queries. This problem was mostly encountered in the implementation of search query, where two tables were combined for comparing different data.  We solved this query problem by using SQL JOIN function, which normally link different data from multiple database table by scanning through them. With this problem solved, it helped us during the implementation to add more functionality to the user interface without having further error prone situations.
 
 
 

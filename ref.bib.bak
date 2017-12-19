@@ -3,7 +3,7 @@
   title={Information architecture for the world wide web},
   author={Rosenfeld, Louis and Morville, Peter},
   year={2002},
-  publisher={" O'Reilly Media, Inc."}
+  publisher={O'Reilly Media, Inc.}
 }
 @online{Gohttp,
  title = {Go Listen and Serve},
@@ -16,7 +16,7 @@
   title={Using SQLite},
   author={Kreibich, Jay},
   year={2010},
-  publisher={" O'Reilly Media, Inc."}
+  publisher={O'Reilly Media, Inc.}
 }
 @online{ANDOR,
 title = {SQLite Clause and usage},
