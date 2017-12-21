@@ -67,7 +67,6 @@ func (s Server) sortmPage(w http.ResponseWriter, r *http.Request) {
 		templateError(w, tname, err)
 		return
 	}
-	r.URL.Query()
 	sortmemory,err := s.db.Sort_Memory()
 		if err != nil {
 		s.db.Error(err)
