@@ -12,7 +12,7 @@ The Go programming language has a development structure that is categorized into
 \item[$\bullet$]HTTP package 
 \end{description}
 
-The database package contains all the Go files with database-related structs. The Go objects represent the same data as in the database. And each Go struct depends on this package as the object-relational mapping tool (ORM) between other structs and database resources. The HTTP package also contains some Go file related to the user interface (for example the function handles) and HTML files. The HTML files contains several templates for the web interface content and elements. These files depends on the GO HTTP package for serving web contents and post requests. \autoref{programpack} describes the list of files in each package.
+The database package contains all the Go files with database-related structs. The Go objects represent the same data as in the database. And each Go struct depends on this package as the object-relational mapping tool (ORM) between other structs and database resources. The HTTP package contains Go file related to the user interface (for example the function handles) and HTML files. The HTML files contains several templates for the web interface content and elements. These files depends on the GO HTTP package for serving web contents and post requests. \autoref{programpack} describes the list of files in each package.
 \pagebreak
 \begin{table}[h!]
   \centering
@@ -77,32 +77,36 @@ func (d DB) CreateMachine(name string, arch string,
 
 \section*{Making a Reservation}
 The reservation process is similar to creating a machine but it requires the User ID and Machine ID as foreign keys in creating a reservation \ref{makereserve}. The User ID is used for selecting the user making the reservation, and Machine ID for selecting the machine to be reserved. On the web interface (reservation page), the form has a drop down list where users can select their user name and the machine they want to reserve. When users open the reservation page to create new reservation, the HTML form use the post request to get list of machines and user name on the drop-down list.
+
 \begin{lstlisting}[caption=Pseudocode, label=addreservation]
-\begin{enumerate}
-\item Input reservation values in the field.
-\item Select machine id from the list where machine name is chosen.
-\item Select user id from the list of user where name is chosen.
-\item Insert all the values to reservation table and return.
-\end{enumerate}
 \end{lstlisting}
+	\begin{enumerate}
+	\item Input reservation values in the field.
+	\item Select machine id from the list where machine name is chosen.
+	\item Select user id from the list of user where name is chosen.
+	\item Insert all the values to reservation table and return.
+	\end{enumerate}
+
+
 \begin{lstlisting}[caption=Storing Reservation details, label=Adding reservation]
 	_, err := d.sql.Exec(`
-			INSERT INTO Reservations(machine,user,start,end,
-			pxepath,nfsroot)
+			INSERT INTO Reservations(machine,user,start,end, pxepath,nfsroot)
 			VALUES (
 				(SELECT id from Machines where name=?),
 				(SELECT id from Users where username=?),
 				//other fields
-			)`,
+			)`, machine,user,start,end,pxepath,nfsroot)
+
 \end{lstlisting}
 
 To make a reservation, users select their user name and a machine from the drop down list which is loaded by GetMachine and GetUser method. The selection query gets the User ID and the Machine ID of the selected user name and machine as foreign key to the reservation database schema. Also, start and end time/date of the reservation is entered on the text field , and this plain text is formatted to match the database using a time package in Go library. After submitting the form, the Go HTTP handler handles the Insert query by taking all the argument values and saving them to database. 
+\subsection*{Concurrency Issues}
+Concurrency issue is the condition where two or more threads want to write data into the same storage location in database at same time. In our own case, this can occur when there is a conflict between two reservations. Example is when two users want to reserve the same machine with overlapping dates. To prevent this concurrency issue, we adopted the concept of SQL transactions and a logical condition that detects any conflict. 
 \section*{Checking Available Machines}
 The user can search the inventory for specific information. One example is the ability to search for available machines in the system as per requirement \ref{searchinventory}. Available machines are those machines that are free for a certain period. This feature helps users to get list of machine free to be reserved. In this process of checking available machines, the user enters a specific start date/time and end date/time in the provided text field, and submits the query. After submiting the query, the HTTP handler processes this request, and the server calls the GetAvailableMachine method to fetch this request from the database. In this method, we used a SQLite JOIN sub query to combine the machine and reservation database table. It helps to indentify the machines that are not reserved for that time range the user entered. The logic contains SQL WHERE, OR and AND operator to perform comparisons between reservation dates and time. \cite{ANDOR}The AND operator is used to allow multiple conditions in the statement,  the OR operator is used to combine conditions that are true, and the WHERE clause is used to specify condition while fetching data from database\cite{WHEREclause}. 
 \autoref{SAM} shows the function and query for this operation.
 \begin{lstlisting}[caption=Searching available, label=SAM]
 func(d DB) Filter_M_By_Dates(from time.Time, to time.Time) ([]Machine, error){
-
          rows, err := d.sql.Query(`
 		SELECT m.id, name, arch, microarch, cores, memory
 		FROM Machines m
@@ -117,14 +121,11 @@ func(d DB) Filter_M_By_Dates(from time.Time, to time.Time) ([]Machine, error){
 As part of the software requirements \ref{addmachines}, users can change the information stored in the database. This is done on the web interface using text box that is attached to every field with that requirement. An example is updating the information of a particular computer or disk when the hardware is upgraded. In this case, the UpdateMachine method performs this action by using the SQLite update query. This update query opens the database schema of the machine and replaces the existing data with a new one.
 \autoref{Updatefunction} code listing shows the update function.
 \begin{lstlisting}[caption=Function for Updating data, label=Updatefunction]
-
 	_, err := d.sql.Exec(`
 			UPDATE Machines
 			SET arch = ?, microarch = ?, cores = ?, memory = ?
 			WHERE `+row+` = id
-
 	`,arch, microarch, cores, memory)
-
 \end{lstlisting}
 \section{Get method}
 The Get method is used for fetching lists of machines and other devices stored in the database. Each time the user opens the web interface, the HTTP handler sends the server a request and the server calls the GetMachines method to fetch the data from database. This information is listed in the inventory on the web interface through the HTTP Response-Writer. The Get method use the SQLite selection query to scan through the database and select the required data.  Another usage for Get method is fetching the details of a machine when the user clicks on a particular machine. A SELECT query and WHERE condition are used in the logic, to specify the machine clicked used its unique ID. This concept is applicable in other struct (type) such as, Disks, NICs and Reservations. 
