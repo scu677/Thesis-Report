@@ -89,19 +89,15 @@ The reservation process is similar to creating a machine but it requires the Use
 
 
 \begin{lstlisting}[caption=Storing Reservation details, label=Adding reservation]
-	_, err := d.sql.Exec(`
-			INSERT INTO Reservations(machine,user,start,end, pxepath,nfsroot)
-			VALUES (
-				(SELECT id from Machines where name=?),
-				(SELECT id from Users where username=?),
-				//other fields
-			)`, machine,user,start,end,pxepath,nfsroot)
-
+	 _, err := d.sql.Exec (`
+	      	INSERT INTO Reservations(machine,user,start,end,pxepath,nfsroot)
+			SELECT (SELECT id from Machines where name=?),(SELECT id from Users where username=?),?,?,?,?
+			where not exists(select * from reservations where (? >= start AND ? <= end) OR (? <= start AND ? >= end))`,machine,user,start,end,pxepath,nfsroot,start,start,end,end)
 \end{lstlisting}
 
 To make a reservation, users select their user name and a machine from the drop down list which is loaded by GetMachine and GetUser method. The selection query gets the User ID and the Machine ID of the selected user name and machine as foreign key to the reservation database schema. Also, start and end time/date of the reservation is entered on the text field , and this plain text is formatted to match the database using a time package in Go library. After submitting the form, the Go HTTP handler handles the Insert query by taking all the argument values and saving them to database. 
 \subsection*{Concurrency Issues}
-Concurrency issue is the condition where two or more threads want to write data into the same storage location in database at same time. In our own case, this can occur when there is a conflict between two reservations. Example is when two users want to reserve the same machine with overlapping dates. To prevent this concurrency issue, we adopted the concept of SQL transactions and a logical condition that detects any conflict. 
+Concurrency issue is the condition where two or more threads want to write data into the same storage location in database at same time. In our design, this can occur when there is a conflict between two reservations. Example is when two users want to reserve the same machine with overlapping or same dates. SQLite initiate a transaction for each process to make sure that two processes doesn't access the database in incompatible manner at same time . We implemented a logical condition that checks for data conflict before a reservation process is completed. The logical condition compares the data (date/time) entered with the existing data, and if they conflict or overlaps each other then that reservation process will abort.
 \section*{Checking Available Machines}
 The user can search the inventory for specific information. One example is the ability to search for available machines in the system as per requirement \ref{searchinventory}. Available machines are those machines that are free for a certain period. This feature helps users to get list of machine free to be reserved. In this process of checking available machines, the user enters a specific start date/time and end date/time in the provided text field, and submits the query. After submiting the query, the HTTP handler processes this request, and the server calls the GetAvailableMachine method to fetch this request from the database. In this method, we used a SQLite JOIN sub query to combine the machine and reservation database table. It helps to indentify the machines that are not reserved for that time range the user entered. The logic contains SQL WHERE, OR and AND operator to perform comparisons between reservation dates and time. \cite{ANDOR}The AND operator is used to allow multiple conditions in the statement,  the OR operator is used to combine conditions that are true, and the WHERE clause is used to specify condition while fetching data from database\cite{WHEREclause}. 
 \autoref{SAM} shows the function and query for this operation.
