@@ -24,17 +24,28 @@ author ={Tutorialspoint},
   note={Available at:\url{https://www.tutorialspoint.com/sqlite/sqlite_and_or_clauses.htm}},
   year={2017},
 }
+
+@misc{SQLJOIN,
+  title={Optimization of SQL queries using early-out join transformations of column-bound relational tables},
+  author={Pirahesh, Mir H and Leung, Ting Y and Lohman, Guy M and Shekita, Eugene J and Simmen, David E},
+  year={1996},
+  month=aug # "~20",
+  publisher={Google Patents},
+  note={US Patent 5,548,758}
+}
 @techreport{PXE,
   title={DHCP Preboot Execution Environment (PXE) Options draft-ietf-dhc-pxe-options-01},
   author={Johnston, M},
   year={2005},
   institution={txt, Internet-Draft}
 }
-@online{NFS,
-title ={Network Installation using PXE},
-author= {Howtos, L},
- note= {Available at :\url{https://simms-teach.com/howtos/201-pxe-install.pdf}},
-  year = {2010},
+@misc{NFS,
+  title={Automatic allocation of least loaded boot server to PXE client on a network VIA DHCP server},
+  author={Subramanian, Hemang Chamakuzhi},
+  year={2005},
+  month=mar # "~22",
+  publisher={Google Patents},
+  note={US Patent 6,871,210}
 }
 @online{DHCP,
 title ={Dynamic Host Configuration Protocol},
@@ -46,22 +57,23 @@ title ={SQL Joins Explained},
 author={SQL},
 note={Available at: \url {http://www.sql-join.com}},
 }
-@misc{SQLJOIN,
-  title={Optimization of SQL queries using early-out join transformations of column-bound relational tables},
-  author={Pirahesh, Mir H and Leung, Ting Y and Lohman, Guy M and Shekita, Eugene J and Simmen, David E},
-  year={1996},
-  month=aug # "~20",
-  publisher={Google Patents},
-  note={US Patent 5,548,758}
-}
-@online{Struct,
-title={Struct and Interface},
-author ={Caleb Doxsey},
-note={Available at :\url{https://www.golang-book.com/books/intro/9}}
+@incollection{Struct,
+  title={Structs and Interfaces},
+  author={Varghese, Shiju},
+  booktitle={Go Recipes},
+  pages={53--74},
+  year={2016},
+  publisher={Springer}
 }
 @book{Method,
   title={The Go programming language},
   author={Donovan, Alan AA and Kernighan, Brian W},
   year={2015},
   publisher={Addison-Wesley Professional}
+}
+@article{sqlinject,
+  title={SQL Injection Attacks and Prevention Techniques},
+  author={Gadgil, Sampada and Pillai, Sanoop and Poojary, Sushant},
+  journal={International Journal on Recent and Innovation Trends in Computing and Communication Volume: 1 Issue: 4 293--296, APR 2013},
+  year={2013}
 }

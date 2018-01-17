@@ -37,7 +37,7 @@ Forms are one  of the elements that provides the ability to input data to the da
 \subsection*{Input Controls}
 The input control in this web interface provides the necessary components that supports the functionality of the software. There are numerous HTML input control, but we have chosen a few that satisfy our specifications. These input controls include text fields, buttons, date fields, drop down list and list box. They are used for both input and output functions like listing the inventory, inserting texts, to update data, to send queries, viewing selection options and searching inventory. These controls are designed with HTML tags and HTML template.
 \subsection{Web Server}
-The server is responsible for parsing all requests from the web interface. When a request is made on the web interface (for instance querying available machines), the server calls the a function to handle this request by providing the necessary resources. And interchanging communication between the user interface and the database system for executions and requests. 
+The web server is a program responsible for parsing all requests from the web interface using HTTP. When a request is made on the web interface (for instance querying available machines), the server calls the a function to handle this request by providing the necessary resources from the database. And interchanging communication between the user interface and the database system for executions and requests. For example, when user create a new reservation which requires to open a new page, our server will serve the web page with the desire HTML template and updated data as requested.
 \begin{figure}[h!]
 \includegraphics[width = \linewidth]{server1.eps}
 \label{fig:Description of Server Activity} 

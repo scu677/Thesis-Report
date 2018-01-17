@@ -81,21 +81,16 @@ The reservation process is similar to creating a machine but it requires the Use
 \begin{lstlisting}[caption=Pseudocode, label=addreservation]
 \end{lstlisting}
 	\begin{enumerate}
-	\item Input reservation values in the field.
-	\item Select machine id from the list where machine name is chosen.
-	\item Select user id from the list of user where name is chosen.
-	\item Insert all the values to reservation table and return.
-	\item Check for conflicting input and rollback
-	\item Insert data if conflict doesn't exist
-	\item return result.
+	\item Begin transaction.
+	\item Select machine and user id from the list where name is chosen and input values.
+	\item Check for conflicting input and rollback..
+	\item Insert data if conflict doesn't exist.
+	\item Commit transaction and return result.
 	\end{enumerate}
-
-
 \begin{lstlisting}[caption=Storing Reservation details, label=Adding reservation]
 	 (`BEGIN;
-	      		INSERT INTO Reservations (machine,user,start,end,pxepath,nfsroot)
-			SELECT (SELECT id from Machines where name=?),(SELECT id from Users where username=?),?,?,?,?
-			where not exists (select r.id from Reservations r 
+	      	INSERT INTO Reservations (machine,user,start,end,pxepath,nfsroot)
+			SELECT (SELECT id from Machines where name=?),(SELECT id from Users where username=?),?,?,?,? where not exists (select r.id from Reservations r 
 			INNER JOIN Machines m 
 			ON m.id = r.machine where m.name = ? AND (? >= start AND ? <= end) OR (? <= start AND ? >= end));COMMIT;`,machine,user,start,end,pxepath,nfsroot,machine,start,start,end,end)
 
