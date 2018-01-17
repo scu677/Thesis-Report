@@ -4,15 +4,15 @@
 \section{Review}
 The software implementation showcases the functionality of all the requirements as described in section \ref{requirements}. This functionality includes the ability to input data and retrieve data through the system. We have accomplished this task by implementing the designed structure. This include the choice of tools used for the development and the design approach. It was implemented to demonstrate the realization of the proposed specifications.
 \section{Implementation tools}
-The user interface is implemented on the internet web browser using a local port. The web browser serves as the environment for testing the front-end (user interface) of the software, while the HTML templates and Go library are used for development. The database was developed using the SQL model schema. The Go HTTP server provides connections between the front-end and back-end implementation. It serves as a channel for parsing requests through the user interface and database. These tools provided all the components necessary to address the requirements for this software. 
+The user interface is implemented on the internet web browser using a HTTPS port. The web browser serves as the environment for testing the front-end (user interface) of the software, while the HTML templates and Go library are used for development. The database was developed using the SQL model schema. The Go HTTP server provides connections between the front-end and back-end implementation. It serves as a channel for parsing requests through the user interface and database. These tools provided all the components necessary to address the requirements for this software. 
 \section{Program Structure} \label{Programstructure}
-The Go programming language has a development structure that is categorized into packages, see \autoref{programpack}. The packages contains a group of program file with dependencies that link them together. For this software design, we have written two main packages to actualize the development goal. In addition to other people's works in these packages, We have added more files with numerous methods and functions of couple or more thousand lines of SQLite, Go and HTML codes that improves the system requirements. These packages include:
+The Go programming language has a development structure that is categorized into packages, see \autoref{programpack}. The packages contains a group of program file with dependencies that link them together. For this software design, we have written two main packages to actualize the development goal. In addition to other people's works in these packages, we have added more files with numerous methods and functions of couple or more thousand lines of SQLite, Go and HTML codes that improves the system requirements. These packages include:
 \begin{description}
 \item[$\bullet$]Database package 
 \item[$\bullet$]HTTP package 
 \end{description}
 
-The database package contains all the Go files with database-related structs. The Go objects represent the same data as in the database. And each Go struct depends on this package as the object-relational mapping tool (ORM) between other structs and database resources. The HTTP package contains Go file related to the user interface (for example the function handles) and HTML files. The HTML files contains several templates for the web interface content and elements. These files depends on the GO HTTP package for serving web contents and post requests. \autoref{programpack} describes the list of files in each package.
+The database package contains all the Go files with database-related structs. The Go objects represent the same data as in the database. And each Go struct depends on this package as the object-relational mapping tool (ORM) between other structs and database resources. The HTTP package contains Go file related to the user interface (for example the function handlers) and HTML files. The HTML files contains several templates for the web interface content and elements. These files depends on the GO HTTP package for serving web contents and post requests. \autoref{programpack} describes the list of files in each package.
 \pagebreak
 \begin{table}[h!]
   \centering
@@ -51,7 +51,7 @@ Adding machines and other devices to the system is one of the software requireme
  \autoref{Initializingdatabase} is the code listing for creating the database:
 \lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
 \lstset{framextopmargin=50pt,frame=bottomline}
-\begin{lstlisting}[caption=Creating table for machine, label=Initializingdatabase]
+\begin{lstlisting}[caption=Creating table for machines, label=Initializingdatabase]
 func initMachines(tx *sql.Tx) error {
 	_, err := tx.Exec(`
 	CREATE TABLE Machines(
@@ -60,7 +60,7 @@ func initMachines(tx *sql.Tx) error {
 	return err
 }
 \end{lstlisting}
-The CreateMachine method is responsible for inserting data to the database schema. It uses the SQLite INSERT query to parse the given data using the arguments to the database. When the user submits a form (AddMachine), the Go HTTP handler processes this form by converting the plain text to a data according to their data types defined in the schema, and then calls the CreateMachine to insert this data in the database. \autoref{Addingmachine2} shows the code list.
+The CreateMachine method is responsible for inserting data to the database schema. It uses the SQLite INSERT query to parse the given data using the arguments to the database. When the user submits a form (AddMachine), the Go HTTP handler processes this form by converting the plain text to data according to their data types defined in the schema, and then calls the CreateMachine to insert this data in the database. \autoref{Addingmachine2} shows the code list.
 \begin{lstlisting}[caption=Adding machines details, label=Addingmachine2]
 func (d DB) CreateMachine(name string, arch string,
 	microarch string, cores int, memoryGB int) error {
@@ -85,19 +85,25 @@ The reservation process is similar to creating a machine but it requires the Use
 	\item Select machine id from the list where machine name is chosen.
 	\item Select user id from the list of user where name is chosen.
 	\item Insert all the values to reservation table and return.
+	\item Check for conflicting input and rollback
+	\item Insert data if conflict doesn't exist
+	\item return result.
 	\end{enumerate}
 
 
 \begin{lstlisting}[caption=Storing Reservation details, label=Adding reservation]
-	 _, err := d.sql.Exec (`
-	      	INSERT INTO Reservations(machine,user,start,end,pxepath,nfsroot)
+	 (`BEGIN;
+	      		INSERT INTO Reservations (machine,user,start,end,pxepath,nfsroot)
 			SELECT (SELECT id from Machines where name=?),(SELECT id from Users where username=?),?,?,?,?
-			where not exists(select * from reservations where (? >= start AND ? <= end) OR (? <= start AND ? >= end))`,machine,user,start,end,pxepath,nfsroot,start,start,end,end)
+			where not exists (select r.id from Reservations r 
+			INNER JOIN Machines m 
+			ON m.id = r.machine where m.name = ? AND (? >= start AND ? <= end) OR (? <= start AND ? >= end));COMMIT;`,machine,user,start,end,pxepath,nfsroot,machine,start,start,end,end)
+
 \end{lstlisting}
 
 To make a reservation, users select their user name and a machine from the drop down list which is loaded by GetMachine and GetUser method. The selection query gets the User ID and the Machine ID of the selected user name and machine as foreign key to the reservation database schema. Also, start and end time/date of the reservation is entered on the text field , and this plain text is formatted to match the database using a time package in Go library. After submitting the form, the Go HTTP handler handles the Insert query by taking all the argument values and saving them to database. 
 \subsection*{Concurrency Issues}
-Concurrency issue is the condition where two or more threads want to write data into the same storage location in database at same time. In our design, this can occur when there is a conflict between two reservations. Example is when two users want to reserve the same machine with overlapping or same dates. SQLite initiate a transaction for each process to make sure that two processes doesn't access the database in incompatible manner at same time . We implemented a logical condition that checks for data conflict before a reservation process is completed. The logical condition compares the data (date/time) entered with the existing data, and if they conflict or overlaps each other then that reservation process will abort.
+Concurrency issue is the condition where two or more threads want to write data into the same storage location in database at same time. It can cause lost of data or affect the integrity of records when one data overrides another entry. In our design, this can occur when there is a conflict between two reservations. Example is when two users want to reserve the same machine with overlapping or same dates. SQLite initiate a transaction for each process to make sure that two processes doesn't access the database in incompatible manner at same time . We implemented a logical condition that checks for data conflict before a reservation process is completed. The logical condition compares the data (date/time) entered with the existing data, and if they conflict or overlaps each other then that reservation process will abort.
 \section*{Checking Available Machines}
 The user can search the inventory for specific information. One example is the ability to search for available machines in the system as per requirement \ref{searchinventory}. Available machines are those machines that are free for a certain period. This feature helps users to get list of machine free to be reserved. In this process of checking available machines, the user enters a specific start date/time and end date/time in the provided text field, and submits the query. After submiting the query, the HTTP handler processes this request, and the server calls the GetAvailableMachine method to fetch this request from the database. In this method, we used a SQLite JOIN sub query to combine the machine and reservation database table. It helps to indentify the machines that are not reserved for that time range the user entered. The logic contains SQL WHERE, OR and AND operator to perform comparisons between reservation dates and time. \cite{ANDOR}The AND operator is used to allow multiple conditions in the statement,  the OR operator is used to combine conditions that are true, and the WHERE clause is used to specify condition while fetching data from database\cite{WHEREclause}. 
 \autoref{SAM} shows the function and query for this operation.
@@ -123,11 +129,11 @@ As part of the software requirements \ref{addmachines}, users can change the inf
 			WHERE `+row+` = id
 	`,arch, microarch, cores, memory)
 \end{lstlisting}
-\section{Get method}
-The Get method is used for fetching lists of machines and other devices stored in the database. Each time the user opens the web interface, the HTTP handler sends the server a request and the server calls the GetMachines method to fetch the data from database. This information is listed in the inventory on the web interface through the HTTP Response-Writer. The Get method use the SQLite selection query to scan through the database and select the required data.  Another usage for Get method is fetching the details of a machine when the user clicks on a particular machine. A SELECT query and WHERE condition are used in the logic, to specify the machine clicked used its unique ID. This concept is applicable in other struct (type) such as, Disks, NICs and Reservations. 
+\section{Get methods}
+The Get methods is used for fetching lists of machines and other devices stored in the database. Each time the user opens the web interface, the HTTP handler sends the server a request and the server calls the GetMachines method to fetch the data from database. This information is listed in the inventory on the web interface through the HTTP Response-Writer. The Get methods use the SQLite selection query to scan through the database and select the required data.  Another usage for Get methods is fetching the details of a machine when the user clicks on a particular machine. A SELECT query and WHERE condition are used in the logic, to specify the machine clicked used its unique ID. This concept is applicable in other struct (type) such as, Disks, NICs and Reservations. 
  
 \section{Problems Encountered}
-During the implementation, we encountered problems such as parsing plain text to database data types. For example, some functions can parse plain text as they are to the database, but in some cases where the values have a different data type (eg. Hardware Macaddress) cant be store as plain text. So this problem was solved by importing functions from the Go library to support those data types. Another issue encountered is trying to combine two database table for search queries. This problem was mostly encountered in the implementation of search query, where two tables were combined for comparing different data.  We solved this query problem by using SQL JOIN function, which normally link different data from multiple database table by scanning through them. With this problem solved, it helped us during the implementation to add more functionality to the user interface without having further error prone situations.
+During the implementation, we encountered problems such as parsing plain text to database data types. For example, some functions can parse plain text as they are to the database, but in some cases where the values have a different data type (eg. Hardware Mac address) cant be store as plain text. So this problem was solved by importing functions from the Go library to support those data types. Another issue encountered is trying to combine two database table for search queries. This problem was mostly encountered in the implementation of search query, where two tables were combined for comparing different data.  We solved this query problem by using SQL JOIN function, which normally link different data from multiple database table by scanning through them. With this problem solved, it helped us during the implementation to add more functionality to the user interface without having further error prone situations.
 
 
 
